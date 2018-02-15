@@ -3,13 +3,17 @@ package by.fyodorov.servletproject.connector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class TimeServlet extends HttpServlet {
 
@@ -41,10 +45,18 @@ public class TimeServlet extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int a = Integer.valueOf(request.getParameter("aValue"));
-        int b = Integer.valueOf(request.getParameter("bValue"));
-        LOGGER.info("getting params: a = " + a + "; b = " + b);
-        request.setAttribute("res", Integer.toString(a + b));
+        response.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8");
+        ServletContext context = getServletContext();
+        String filename = context.getInitParameter("fileName");
+        String root = context.getRealPath("");
+
+        FileReader reader = new FileReader(root + filename);
+        int code = reader.read();
+        reader.close();
+
+        request.setAttribute("res", Character.toString((char)code));
+        LOGGER.info("read " + code + " from file");
         request.getRequestDispatcher("/result.jsp").forward(request, response);
     }
 }

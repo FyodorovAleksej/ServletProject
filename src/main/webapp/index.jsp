@@ -5,8 +5,13 @@
   Time: 10:01
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html lang="en">
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="result" />
+<html lang="${language}">
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -18,11 +23,26 @@
     <title>Hello, world!</title>
 </head>
 <body>
-
+<br/>
+<h2 class="text-center">Привет!</h2>
+<br/>
+<form>
+    <select id="language" class="form-control" name="language" onchange="submit()">
+        <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
+        <option value="ru" ${language == 'ru' ? 'selected' : ''}>Russian</option>
+    </select>
+</form>
 <form name="Simple" action="time" method="POST">
-    <input type="text" class="input-group-text" name="aValue" value="0"/>
-    <input type="text" class="input-group-text" name="bValue" value="0"/>
-    <input type="submit" class="btn" name="send" value="Evaluate"/>
+    <div class="form-group">
+        <label for="aV"><fmt:message key="keyA" /></label>
+        <input type="text" class="form-control" name="aValue" value="0" id="aV">
+    </div>
+    <div class="form-group">
+        <label for="bV"><fmt:message key="keyB" /></label>
+        <input type="text" class="form-control" name="bValue" value="0" id="bV">
+    </div>
+    <fmt:message key="send" var="buttonValue" />
+    <input type="submit" class="btn" name="send" value=${buttonValue}>
 </form>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
