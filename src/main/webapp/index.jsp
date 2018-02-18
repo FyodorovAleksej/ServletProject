@@ -10,7 +10,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
 <fmt:setLocale value="${language}" />
-<fmt:setBundle basename="result" />
+<fmt:setBundle basename="text" />
 <html lang="${language}">
 <head>
     <!-- Required meta tags -->
@@ -24,25 +24,18 @@
 </head>
 <body>
 <br/>
-<h2 class="text-center">Привет!</h2>
+<fmt:message key="welcome" var="wel"/>
+<h2 class="text-center">${wel}</h2>
 <br/>
 <form>
-    <select id="language" class="form-control" name="language" onchange="submit()">
-        <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
-        <option value="ru" ${language == 'ru' ? 'selected' : ''}>Russian</option>
-    </select>
+<select id="language" class="form-control" name="language" onchange="submit()">
+    <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
+    <option value="ru" ${language == 'ru' ? 'selected' : ''}>Russian</option>
+</select>
 </form>
-<form name="Simple" action="time" method="POST">
-    <div class="form-group">
-        <label for="aV"><fmt:message key="keyA" /></label>
-        <input type="text" class="form-control" name="aValue" value="0" id="aV">
-    </div>
-    <div class="form-group">
-        <label for="bV"><fmt:message key="keyB" /></label>
-        <input type="text" class="form-control" name="bValue" value="0" id="bV">
-    </div>
-    <fmt:message key="send" var="buttonValue" />
-    <input type="submit" class="btn" name="send" value=${buttonValue}>
+<form action="main" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" class="btn" value="OOO"/>
+    <input type="submit" class="btn btn-primary">
 </form>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
