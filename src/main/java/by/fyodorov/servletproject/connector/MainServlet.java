@@ -1,5 +1,6 @@
 package by.fyodorov.servletproject.connector;
 
+import by.fyodorov.servletproject.exception.MailException;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -46,6 +47,7 @@ public class MainServlet extends HttpServlet {
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setCharacterEncoding("UTF-8");
         request.setCharacterEncoding("UTF-8");
+
         ServletContext context = getServletContext();
         String filename = context.getInitParameter("fileName");
         String root = context.getRealPath("");
@@ -76,6 +78,20 @@ public class MainServlet extends HttpServlet {
         LOGGER.info(lang);
         request.setAttribute("language", lang);
 
+        sendMail(root, "TEST");
+
         request.getRequestDispatcher("/result.jsp").forward(request, response);
     }
+
+    private void sendMail(String path, String text) {
+        try {
+            MailAdapter adapter = new MailAdapter(path);
+            adapter.send(text, "Fyodorov.aleksej@gmail.com");
+        }
+        catch (MailException e) {
+            LOGGER.catching(e);
+        }
+    }
+
+
 }

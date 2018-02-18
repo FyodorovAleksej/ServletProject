@@ -27,6 +27,7 @@
 <fmt:message key="welcome" var="wel"/>
 <h2 class="text-center">${wel}</h2>
 <br/>
+<img src="${pageContext.request.contextPath}/images/justDoIt.jpg"/>
 <form>
 <select id="language" class="form-control" name="language" onchange="submit()">
     <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
