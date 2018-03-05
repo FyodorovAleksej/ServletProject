@@ -1,0 +1,86 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="name" default="unnamed">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:pattern value="[a-z]"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+
+    <xs:element name="origin">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:pattern value="[a-zA-Z]"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+
+    <xs:element name="soil" default="podzolic">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:enumeration value="podzolic"/>
+                <xs:enumeration value="ground"/>
+                <xs:enumeration value="sad-podzolic"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+
+    <xs:element name="multiplying" default="podzolic">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:enumeration value="leafs"/>
+                <xs:enumeration value="stalks"/>
+                <xs:enumeration value="seeds"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+
+    <xs:element name="stalkColor" type="xs:string"/>
+    <xs:element name="leafColor" type="xs:string"/>
+    <xs:element name="size" type="xs:double"/>
+    <xs:element name="temperature" type="xs:double"/>
+    <xs:element name="lighting" type="xs:boolean"/>
+    <xs:element name="watering" type="xs:double"/>
+
+    <xs:element name="visualParameters">
+        <xs:complexType>
+            <xs:all>
+                <xs:element ref="stalkColor"/>
+                <xs:element ref="leafColor"/>
+                <xs:element ref="size"/>
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="growingTips">
+        <xs:complexType>
+            <xs:all>
+                <xs:element ref="temperature"/>
+                <xs:element ref="lighting"/>
+                <xs:element ref="watering"/>
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="flower">
+        <xs:complexType>
+            <xs:all>
+                <xs:element ref="name"/>
+                <xs:element ref="soil"/>
+                <xs:element ref="origin"/>
+                <xs:element ref="visualParameters"/>
+                <xs:element ref="growingTips"/>
+                <xs:element ref="multiplying"/>
+            </xs:all>
+            <xs:attribute type="xs:ID" name="id"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="flowers">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="flower" maxOccurs="unbounded" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

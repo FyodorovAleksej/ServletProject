@@ -1,0 +1,41 @@
+<flowers>
+    <flower>
+        <name>chamomile</name>
+        <soil>ground</soil>
+        <origin>Eurasia</origin>
+
+        <visualParameters>
+            <stalkColor>green</stalkColor>
+            <leafColor>white</leafColor>
+            <size>20</size>
+        </visualParameters>
+
+        <growingTips>
+            <temperature>14</temperature>
+            <lighting>true</lighting>
+            <watering>20</watering>
+        </growingTips>
+
+        <multiplying>seeds</multiplying>
+    </flower>
+
+    <flower>
+        <name>galanthus</name>
+        <soil>ground</soil>
+        <origin>Europe</origin>
+
+        <visualParameters>
+            <stalkColor>green</stalkColor>
+            <leafColor>white</leafColor>
+            <size>30</size>
+        </visualParameters>
+
+        <growingTips>
+            <temperature>10</temperature>
+            <lighting>true</lighting>
+            <watering>40</watering>
+        </growingTips>
+
+        <multiplying>seeds</multiplying>
+    </flower>
+</flowers>

@@ -22,7 +22,20 @@
     <title>Result</title>
 </head>
 <body>
-<h1 class="alert-info"><fmt:message key="result" /> = ${res}</h1>
+<h1 class="alert-info"><fmt:message key="result" />:</h1>
+<br>
+<table border="1">
+    <caption><fmt:message key="flower.header"/></caption>
+    <tr>
+        <th><fmt:message key="flower.name"/></th>
+        <th><fmt:message key="flower.soil"/></th>
+        <th><fmt:message key="flower.origin"/></th>
+        <th><fmt:message key="flower.visual"/></th>
+        <th><fmt:message key="flower.tips"/></th>
+        <th><fmt:message key="flower.multiplying"/></th>
+    </tr>
+    ${res}
+</table>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

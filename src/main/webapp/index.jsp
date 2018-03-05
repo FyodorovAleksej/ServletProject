@@ -27,16 +27,17 @@
 <fmt:message key="welcome" var="wel"/>
 <h2 class="text-center">${wel}</h2>
 <br/>
-<img src="${pageContext.request.contextPath}/images/justDoIt.jpg"/>
+<img src="${request.contextPath}/images/justDoIt.jpg"/>
 <form>
 <select id="language" class="form-control" name="language" onchange="submit()">
     <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
     <option value="ru" ${language == 'ru' ? 'selected' : ''}>Russian</option>
 </select>
 </form>
+<fmt:message key="send" var="se"/>
 <form action="main" method="post" enctype="multipart/form-data">
     <input type="file" name="file" class="btn" value="OOO"/>
-    <input type="submit" class="btn btn-primary">
+    <button type="submit" class="btn btn-primary">${se}</button>
 </form>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->

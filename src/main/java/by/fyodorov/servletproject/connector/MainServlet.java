@@ -1,17 +1,15 @@
 package by.fyodorov.servletproject.connector;
 
-import by.fyodorov.servletproject.exception.MailException;
-import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-import java.io.*;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -45,53 +43,26 @@ public class MainServlet extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8");
-
-        ServletContext context = getServletContext();
-        String filename = context.getInitParameter("fileName");
-        String root = context.getRealPath("");
-
-        LOGGER.info(root + filename);
-
-        FileReader reader = new FileReader(root + filename);
-        int code = reader.read();
-        reader.close();
-
-        request.setAttribute("res", Character.toString((char)code));
-        LOGGER.info("read " + code + " from file");
-
-        Part filePart = request.getPart("file");
-        Path path = Paths.get(filePart.getSubmittedFileName());
-        LOGGER.info("input = \"" + path.toAbsolutePath() + "\"");
-        String uploadFileName = path.getFileName().toString();
-
-        LOGGER.info("getting file = \"" + uploadFileName + "\"");
-
-        String cloneName = context.getInitParameter("cloneName");
-        InputStream fileContent = filePart.getInputStream();
-        File outputFile = new File(root + cloneName);
-        FileUtils.copyInputStreamToFile(fileContent, outputFile);
-        LOGGER.info("output file = \"" + outputFile.getAbsolutePath() + "\"");
-
-        String lang = request.getParameter("language");
-        LOGGER.info(lang);
-        request.setAttribute("language", lang);
-
-        sendMail(root, "TEST");
-
-        request.getRequestDispatcher("/result.jsp").forward(request, response);
-    }
-
-    private void sendMail(String path, String text) {
         try {
-            MailAdapter adapter = new MailAdapter(path);
-            adapter.send(text, "Fyodorov.aleksej@gmail.com");
+            request.setCharacterEncoding("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            LOGGER.catching(e);
         }
-        catch (MailException e) {
+
+        Part filePart = null;
+        try {
+            filePart = request.getPart("file");
+            Path path = Paths.get(filePart.getSubmittedFileName());
+            LOGGER.info("input = \"" + path.toAbsolutePath() + "\"");
+            String uploadFileName = path.getFileName().toString();
+
+            LOGGER.info("getting file = \"" + uploadFileName + "\"");
+
+            request.getRequestDispatcher("/pages/result.jsp").forward(request, response);
+        } catch (IOException e) {
+            LOGGER.catching(e);
+        } catch (ServletException e) {
             LOGGER.catching(e);
         }
     }
-
-
 }
