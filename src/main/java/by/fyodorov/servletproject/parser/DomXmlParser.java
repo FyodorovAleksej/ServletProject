@@ -1,6 +1,9 @@
 package by.fyodorov.servletproject.parser;
 
-import by.fyodorov.servletproject.entity.PlantEntity;
+import by.fyodorov.servletproject.entity.AbstractPlantEntity;
+import by.fyodorov.servletproject.entity.MicroPlantEntity;
+import by.fyodorov.servletproject.entity.UsualPlantEntity;
+import by.fyodorov.servletproject.entity.WildPlantEntity;
 import by.fyodorov.servletproject.exception.XmlException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,29 +20,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 
+import static by.fyodorov.servletproject.parser.FlowerAttribute.*;
+
 public class DomXmlParser implements XmlParser {
     private static final Logger LOGGER = LogManager.getLogger(DomXmlParser.class);
-
-    private static final String FLOWER_NODE = "flower";
-
-    private static final String ID_ATTRIBUTE = "id";
-    private static final String NAME_ATTRIBUTE = "name";
-    private static final String SOIL_ATTRIBUTE = "soil";
-    private static final String ORIGIN_ATTRIBUTE = "origin";
-
-    private static final String VISUAL_NODE = "visualParameters";
-
-    private static final String STALK_COLOR_ATTRIBUTE = "stalkColor";
-    private static final String LEAF_COLOR_ATTRIBUTE = "leafColor";
-    private static final String SIZE_ATTRIBUTE = "size";
-
-    private static final String TIPS_NODE = "growingTips";
-
-    private static final String TEMPERATURE_ATTRIBUTE = "temperature";
-    private static final String LIGHTING_ATTRIBUTE = "lighting";
-    private static final String WATERING_ATTRIBUTE = "watering";
-    private static final String MULTIPLYING_ATTRIBUTE = "multiplying";
-
 
     /**
      * Parse XML file for getting array of people, saving in file
@@ -47,8 +31,9 @@ public class DomXmlParser implements XmlParser {
      * @param path the path of xml file for parse
      * @return the array of people in xml file (path)
      */
-    public LinkedList<PlantEntity> parseFile(String path) throws XmlException {
+    public LinkedList<AbstractPlantEntity> parseFile(String path) throws XmlException {
         try {
+            LOGGER.info("start parsing file = \"" + path + "\"");
             File inputFile = new File(path);
             if (!inputFile.exists()) {
                 throw new XmlException("File = \"" + path + "\" doesn't exist");
@@ -57,10 +42,21 @@ public class DomXmlParser implements XmlParser {
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(inputFile);
             doc.getDocumentElement().normalize();
-            NodeList nList = doc.getElementsByTagName(FLOWER_NODE);
-            LinkedList<PlantEntity> list = new LinkedList<>();
-            for (int temp = 0; temp < nList.getLength(); temp++) {
-                list.add(parseFromXML(nList.item(temp)));
+            LinkedList<AbstractPlantEntity> list = new LinkedList<>();
+
+            NodeList usualList = doc.getElementsByTagName(USUAL_ATTRIBUTE.getValue());
+            for (int temp = 0; temp < usualList.getLength(); temp++) {
+                list.add(parseFromXML(usualList.item(temp)));
+            }
+
+            NodeList wildList = doc.getElementsByTagName(WILD_ATTRIBUTE.getValue());
+            for (int temp = 0; temp < wildList.getLength(); temp++) {
+                list.add(parseFromXML(wildList.item(temp)));
+            }
+
+            NodeList microList = doc.getElementsByTagName(MICRO_ATTRIBUTE.getValue());
+            for (int temp = 0; temp < microList.getLength(); temp++) {
+                list.add(parseFromXML(microList.item(temp)));
             }
             return list;
         } catch (ParserConfigurationException e) {
@@ -78,40 +74,44 @@ public class DomXmlParser implements XmlParser {
      * @param node  the path of xml file for parsing
      * @return the user with @param index
      */
-    private PlantEntity parseFromXML(Node node) {
-        int id = 0;
-        String name = null;
-        String soil = null;
-        String origin = null;
-        String stalkColor = null;
-        String leafColor = null;
-        double size = 0;
-        double temperature = 0;
-        boolean lighting = false;
-        double watering = 0;
-        String multiplying = null;
-
-        Element flower = (Element) node;
-        id = Integer.valueOf(flower.getAttribute(ID_ATTRIBUTE));
-        name = getXMLArgument(node, NAME_ATTRIBUTE);
-        soil = getXMLArgument(node, SOIL_ATTRIBUTE);
-        origin = getXMLArgument(node, ORIGIN_ATTRIBUTE);
-
-        Node visualNode = flower.getElementsByTagName(VISUAL_NODE).item(0);
-        if (visualNode.getNodeType() == Node.ELEMENT_NODE) {
-            stalkColor = getXMLArgument(visualNode, STALK_COLOR_ATTRIBUTE);
-            leafColor = getXMLArgument(visualNode, LEAF_COLOR_ATTRIBUTE);
-            size = Double.valueOf(getXMLArgument(visualNode, SIZE_ATTRIBUTE));
+    private AbstractPlantEntity parseFromXML(Node node) {
+        Element element = (Element) node;
+        if (WILD_ATTRIBUTE.getValue().equals(element.getTagName())) {
+            WildPlantEntity wildEntity = new WildPlantEntity();
+            wildEntity.setStalkColor(getXMLArgument(node, STALK_COLOR_ATTRIBUTE.getValue()));
+            wildEntity.setLeafColor(getXMLArgument(node, LEAF_COLOR_ATTRIBUTE.getValue()));
+            wildEntity.setSize(Double.valueOf(getXMLArgument(node, SIZE_ATTRIBUTE.getValue())));
+            fillFlower(wildEntity, node);
+            return wildEntity;
         }
-        Node growingNode = flower.getElementsByTagName(TIPS_NODE).item(0);
-        if (growingNode.getNodeType() == Node.ELEMENT_NODE) {
-            temperature = Double.valueOf(getXMLArgument(growingNode, TEMPERATURE_ATTRIBUTE));
-            lighting = Boolean.valueOf(getXMLArgument(growingNode, LIGHTING_ATTRIBUTE));
-            watering = Double.valueOf(getXMLArgument(growingNode, WATERING_ATTRIBUTE));
+        if (MICRO_ATTRIBUTE.getValue().equals(element.getTagName())) {
+            MicroPlantEntity microEntity = new MicroPlantEntity();
+            microEntity.setTemperature(Double.valueOf(getXMLArgument(node, TEMPERATURE_ATTRIBUTE.getValue())));
+            microEntity.setLighting(Boolean.valueOf(getXMLArgument(node, LIGHTING_ATTRIBUTE.getValue())));
+            microEntity.setWatering(Double.valueOf(getXMLArgument(node, WATERING_ATTRIBUTE.getValue())));
+            fillFlower(microEntity, node);
+            return microEntity;
         }
+        if (USUAL_ATTRIBUTE.getValue().equals(element.getTagName())) {
+            UsualPlantEntity usualEntity = new UsualPlantEntity();
+            usualEntity.setStalkColor(getXMLArgument(node, STALK_COLOR_ATTRIBUTE.getValue()));
+            usualEntity.setLeafColor(getXMLArgument(node, LEAF_COLOR_ATTRIBUTE.getValue()));
+            usualEntity.setSize(Double.valueOf(getXMLArgument(node, SIZE_ATTRIBUTE.getValue())));
+            usualEntity.setTemperature(Double.valueOf(getXMLArgument(node, TEMPERATURE_ATTRIBUTE.getValue())));
+            usualEntity.setLighting(Boolean.valueOf(getXMLArgument(node, LIGHTING_ATTRIBUTE.getValue())));
+            usualEntity.setWatering(Double.valueOf(getXMLArgument(node, WATERING_ATTRIBUTE.getValue())));
+            fillFlower(usualEntity, node);
+            return usualEntity;
+        }
+        return null;
+    }
 
-        multiplying = getXMLArgument(node, MULTIPLYING_ATTRIBUTE);
-        return new PlantEntity(id, name, soil, origin, stalkColor, leafColor, size, temperature, lighting, watering, multiplying);
+    private void fillFlower(AbstractPlantEntity entity, Node node) {
+        entity.setId(Integer.valueOf(((Element)node).getAttribute(ID_ATTRIBUTE.getValue())));
+        entity.setName(getXMLArgument(node, NAME_ATTRIBUTE.getValue()));
+        entity.setSoil(getXMLArgument(node, SOIL_ATTRIBUTE.getValue()));
+        entity.setOrigin(getXMLArgument(node, ORIGIN_ATTRIBUTE.getValue()));
+        entity.setMultiplying(getXMLArgument(node, MULTIPLYING_ATTRIBUTE.getValue()));
     }
 
 
@@ -128,6 +128,6 @@ public class DomXmlParser implements XmlParser {
             Element element = (Element) node;
             return element.getElementsByTagName(attribute).item(0).getTextContent();
         }
-        return null;
+        return "";
     }
 }

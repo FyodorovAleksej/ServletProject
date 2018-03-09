@@ -1,6 +1,6 @@
 package by.fyodorov.servletproject.parser;
 
-import by.fyodorov.servletproject.entity.PlantEntity;
+import by.fyodorov.servletproject.entity.AbstractPlantEntity;
 import by.fyodorov.servletproject.exception.XmlException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,7 +21,7 @@ public class SaxXmlParser implements XmlParser {
      * @param path the path of xml file for parse
      * @return the array of people in xml file (path)
      */
-    public LinkedList<PlantEntity> parseFile (String path) throws XmlException {
+    public LinkedList<AbstractPlantEntity> parseFile (String path) throws XmlException {
         try {
             File inputFile = new File(path);
             if (!inputFile.exists()) {

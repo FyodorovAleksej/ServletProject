@@ -1,37 +1,24 @@
 package by.fyodorov.servletproject.parser;
 
-import by.fyodorov.servletproject.entity.PlantEntity;
+import by.fyodorov.servletproject.entity.AbstractPlantEntity;
+import by.fyodorov.servletproject.entity.MicroPlantEntity;
+import by.fyodorov.servletproject.entity.UsualPlantEntity;
+import by.fyodorov.servletproject.entity.WildPlantEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
+import java.util.HashMap;
 import java.util.LinkedList;
+
+import static by.fyodorov.servletproject.parser.FlowerAttribute.*;
 
 class SaxHandler extends DefaultHandler {
     private static final Logger LOGGER = LogManager.getLogger(SaxHandler.class);
 
-    private LinkedList<PlantEntity> plants = new LinkedList<>();
+    private LinkedList<AbstractPlantEntity> plants = new LinkedList<>();
 
-    private static final String FLOWER_NODE = "flower";
-
-    private static final String ID_ATTRIBUTE = "id";
-    private static final String NAME_ATTRIBUTE = "name";
-    private static final String SOIL_ATTRIBUTE = "soil";
-    private static final String ORIGIN_ATTRIBUTE = "origin";
-
-    private static final String VISUAL_NODE = "visualParameters";
-
-    private static final String STALK_COLOR_ATTRIBUTE = "stalkColor";
-    private static final String LEAF_COLOR_ATTRIBUTE = "leafColor";
-    private static final String SIZE_ATTRIBUTE = "size";
-
-    private static final String TIPS_NODE = "growingTips";
-
-    private static final String TEMPERATURE_ATTRIBUTE = "temperature";
-    private static final String LIGHTING_ATTRIBUTE = "lighting";
-    private static final String WATERING_ATTRIBUTE = "watering";
-    private static final String MULTIPLYING_ATTRIBUTE = "multiplying";
 
     private int id = 0;
     private String name = null;
@@ -45,137 +32,160 @@ class SaxHandler extends DefaultHandler {
     private double watering = 0;
     private String multiplying = null;
 
-    private boolean bName = false;
-    private boolean bSoil = false;
-    private boolean bOrigin = false;
-    private boolean bStalkColor = false;
-    private boolean bLeafColor = false;
-    private boolean bSize = false;
-    private boolean bTemperature = false;
-    private boolean bLighting = false;
-    private boolean bWatering = false;
-    private boolean bMultiplying = false;
-
-    private boolean bVisual = false;
-    private boolean bTips = false;
-
-    private int count = 0;
+    private byte node = 0;
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) {
-        LOGGER.info("start element");
-        LOGGER.info("length ==== " + attributes.getLength() + " NAME = " + qName);
-        if (qName.equalsIgnoreCase(FLOWER_NODE)) {
-            id = Integer.valueOf(attributes.getValue(ID_ATTRIBUTE));
-        } else if (qName.equalsIgnoreCase(NAME_ATTRIBUTE)) {
-            bName = true;
-            count++;
-        } else if (qName.equalsIgnoreCase(SOIL_ATTRIBUTE)) {
-            bSoil = true;
-            count++;
-        } else if (qName.equalsIgnoreCase(ORIGIN_ATTRIBUTE)) {
-            bOrigin = true;
-            count++;
-        } else if (qName.equalsIgnoreCase(VISUAL_NODE)) {
-            bVisual = true;
-        } else if (qName.equalsIgnoreCase(STALK_COLOR_ATTRIBUTE)) {
-            bStalkColor = true;
-            count++;
-        } else if (qName.equalsIgnoreCase(LEAF_COLOR_ATTRIBUTE)) {
-            bLeafColor = true;
-            count++;
-        } else if (qName.equalsIgnoreCase(SIZE_ATTRIBUTE)) {
-            bSize = true;
-            count++;
-        } else if (qName.equalsIgnoreCase(TIPS_NODE)) {
-            bTips = true;
-        } else if (qName.equalsIgnoreCase(TEMPERATURE_ATTRIBUTE)) {
-            bTemperature = true;
-            count++;
-        } else if (qName.equalsIgnoreCase(LIGHTING_ATTRIBUTE)) {
-            bLighting = true;
-            count++;
-        } else if (qName.equalsIgnoreCase(WATERING_ATTRIBUTE)) {
-            bWatering = true;
-            count++;
-        } else if (qName.equalsIgnoreCase(MULTIPLYING_ATTRIBUTE)) {
-            bMultiplying = true;
-            count++;
+        HashMap<String, String> map = new HashMap<>();
+        for (int i = 0; i < attributes.getLength(); i++) {
+            map.put(attributes.getQName(i), attributes.getValue(i));
         }
+        startHandler(qName, map);
+    }
+
+    @Override
+    public void endElement(String uri, String localName, String qName) {
+        endHandler(qName);
     }
 
     @Override
     public void characters(char ch[], int start, int length) {
-        LOGGER.info("checking - " + new String(ch,start,length));
-        if (bName) {
-            name = new String(ch, start, length);
-            bName = false;
-        } else if (bSoil) {
-            soil = new String(ch, start, length);
-            bSoil = false;
-        } else if (bOrigin) {
-            origin = new String(ch, start, length);
-            bOrigin = false;
-        } else if (bStalkColor) {
-            stalkColor = new String(ch, start, length);
-            bStalkColor = false;
-        } else if (bLeafColor) {
-            leafColor = new String(ch, start, length);
-            bLeafColor = false;
-        } else if (bSize) {
-            size = Double.valueOf(new String(ch, start, length));
-            bSize = false;
-        } else if (bVisual) {
-            bVisual = false;
-        } else if (bTemperature) {
-            temperature = Double.valueOf(new String(ch, start, length));
-            bTemperature = false;
-        } else if (bLighting) {
-            lighting = Boolean.valueOf(new String(ch, start, length));
-            bLighting = false;
-        } else if (bWatering) {
-            watering = Double.valueOf(new String(ch, start, length));
-            bWatering = false;
-        } else if (bMultiplying) {
-            multiplying = new String(ch, start, length);
-            bMultiplying = false;
-        } else if (bTips) {
-            bTips = false;
-        }
+        charactersHandler(new String(ch, start, length));
+    }
 
-        if (count == 10) {
-            plants.addLast(new PlantEntity(id, name, soil, origin, stalkColor, leafColor, size, temperature, lighting, watering, multiplying));
+    public LinkedList<AbstractPlantEntity> getPlants() {
+        return plants;
+    }
 
-            bName = false;
-            bSoil = false;
-            bOrigin = false;
-            bStalkColor = false;
-            bLeafColor = false;
-            bSize = false;
-            bTemperature = false;
-            bLighting = false;
-            bWatering = false;
-            bMultiplying = false;
-            bVisual = false;
-            bTips = false;
+    public void startHandler(String qName, HashMap<String, String> map) {
+        LOGGER.info("start element");
+        LOGGER.info("length ==== " + map.size() + " NAME = " + qName);
 
-            id = 0;
-            name = null;
-            soil = null;
-            origin = null;
-            stalkColor = null;
-            leafColor = null;
-            size = 0;
-            temperature = 0;
-            lighting = false;
-            watering = 0;
-            multiplying = null;
+        if (    FLOWER_NODE.getValue().equalsIgnoreCase(qName) ||
+                USUAL_ATTRIBUTE.getValue().equalsIgnoreCase(qName) ||
+                WILD_ATTRIBUTE.getValue().equalsIgnoreCase(qName) ||
+                MICRO_ATTRIBUTE.getValue().equalsIgnoreCase(qName)) {
+            id = Integer.valueOf(map.get(ID_ATTRIBUTE.getValue()));
 
-            count = 0;
+        } else if (NAME_ATTRIBUTE.getValue().equalsIgnoreCase(qName)) {
+            node = NAME_ATTRIBUTE.getCode();
+
+        } else if (SOIL_ATTRIBUTE.getValue().equalsIgnoreCase(qName)) {
+            node = SOIL_ATTRIBUTE.getCode();
+
+        } else if (ORIGIN_ATTRIBUTE.getValue().equalsIgnoreCase(qName)) {
+            node = ORIGIN_ATTRIBUTE.getCode();
+
+        } else if (VISUAL_NODE.getValue().equalsIgnoreCase(qName)) {
+            node = VISUAL_NODE.getCode();
+
+        } else if (STALK_COLOR_ATTRIBUTE.getValue().equalsIgnoreCase(qName)) {
+            node = STALK_COLOR_ATTRIBUTE.getCode();
+
+        } else if (LEAF_COLOR_ATTRIBUTE.getValue().equalsIgnoreCase(qName)) {
+            node = LEAF_COLOR_ATTRIBUTE.getCode();
+
+        } else if (SIZE_ATTRIBUTE.getValue().equalsIgnoreCase(qName)) {
+            node = SIZE_ATTRIBUTE.getCode();
+
+        } else if (TIPS_NODE.getValue().equalsIgnoreCase(qName)) {
+            node = TIPS_NODE.getCode();
+
+        } else if (TEMPERATURE_ATTRIBUTE.getValue().equalsIgnoreCase(qName)) {
+            node = TEMPERATURE_ATTRIBUTE.getCode();
+
+        } else if (LIGHTING_ATTRIBUTE.getValue().equalsIgnoreCase(qName)) {
+            node = LIGHTING_ATTRIBUTE.getCode();
+
+        } else if (WATERING_ATTRIBUTE.getValue().equalsIgnoreCase(qName)) {
+            node = WATERING_ATTRIBUTE.getCode();
+
+        } else if (MULTIPLYING_ATTRIBUTE.getValue().equalsIgnoreCase(qName)) {
+            node = MULTIPLYING_ATTRIBUTE.getCode();
         }
     }
 
-    public LinkedList<PlantEntity> getPlants() {
-        return plants;
+
+    public void charactersHandler(String characters) {
+        LOGGER.info("checking - " + characters);
+        if (node == NAME_ATTRIBUTE.getCode()) {
+            name = characters;
+        } else if (node == SOIL_ATTRIBUTE.getCode()) {
+            soil = characters;
+        } else if (node == ORIGIN_ATTRIBUTE.getCode()) {
+            origin = characters;
+        } else if (node == STALK_COLOR_ATTRIBUTE.getCode()) {
+            stalkColor = characters;
+        } else if (node == LEAF_COLOR_ATTRIBUTE.getCode()) {
+            leafColor = characters;
+        } else if (node == SIZE_ATTRIBUTE.getCode()) {
+            size = Double.valueOf(characters);
+        } else if (node == TEMPERATURE_ATTRIBUTE.getCode()) {
+            temperature = Double.valueOf(characters);
+        } else if (node == LIGHTING_ATTRIBUTE.getCode()) {
+            lighting = Boolean.valueOf(characters);
+        } else if (node == WATERING_ATTRIBUTE.getCode()) {
+            watering = Double.valueOf(characters);
+        } else if (node == MULTIPLYING_ATTRIBUTE.getCode()) {
+            multiplying = characters;
+        }
+        node = 0;
+    }
+
+    public void endHandler(String qName) {
+        if (WILD_ATTRIBUTE.getValue().equalsIgnoreCase(qName)) {
+            WildPlantEntity entity = new WildPlantEntity();
+            entity.setStalkColor(stalkColor);
+            entity.setLeafColor(leafColor);
+            entity.setSize(size);
+            fillFlower(entity);
+            plants.addLast(entity);
+            reset();
+        }
+        if (MICRO_ATTRIBUTE.getValue().equalsIgnoreCase(qName)) {
+            MicroPlantEntity entity = new MicroPlantEntity();
+            entity.setTemperature(temperature);
+            entity.setLighting(lighting);
+            entity.setWatering(watering);
+            fillFlower(entity);
+            plants.addLast(entity);
+            reset();
+        }
+        if (USUAL_ATTRIBUTE.getValue().equalsIgnoreCase(qName)) {
+            UsualPlantEntity entity = new UsualPlantEntity();
+            entity.setStalkColor(stalkColor);
+            entity.setLeafColor(leafColor);
+            entity.setSize(size);
+            entity.setTemperature(temperature);
+            entity.setLighting(lighting);
+            entity.setWatering(watering);
+            fillFlower(entity);
+            plants.addLast(entity);
+            reset();
+        }
+    }
+
+    private void fillFlower(AbstractPlantEntity entity) {
+        entity.setId(id);
+        entity.setName(name);
+        entity.setSoil(soil);
+        entity.setOrigin(origin);
+        entity.setMultiplying(multiplying);
+    }
+
+    private void reset() {
+        id = 0;
+        name = null;
+        soil = null;
+        origin = null;
+        stalkColor = null;
+        leafColor = null;
+        size = 0;
+        temperature = 0;
+        lighting = false;
+        watering = 0;
+        multiplying = null;
+
+        node = 0;
     }
 }

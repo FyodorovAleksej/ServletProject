@@ -39,6 +39,15 @@
     <input type="file" name="file" class="btn" value="OOO"/>
     <button type="submit" class="btn btn-primary">${se}</button>
 </form>
+
+<form action="parser" method="post" enctype="multipart/form-data">
+    <select id="parser" class="form-control" name="parser">
+        <option value="DOM">DOM</option>
+        <option value="SAX">SAX</option>
+        <option value="StAX">StAX</option>
+    </select>
+    <button type="submit" class="btn btn-primary">${se}</button>
+</form>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

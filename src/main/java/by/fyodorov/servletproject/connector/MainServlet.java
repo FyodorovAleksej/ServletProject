@@ -1,5 +1,9 @@
 package by.fyodorov.servletproject.connector;
 
+import by.fyodorov.servletproject.entity.AbstractPlantEntity;
+import by.fyodorov.servletproject.exception.XmlException;
+import by.fyodorov.servletproject.parser.DomXmlParser;
+import by.fyodorov.servletproject.parser.XmlParser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -8,10 +12,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.LinkedList;
 
 public class MainServlet extends HttpServlet {
 
@@ -53,15 +57,27 @@ public class MainServlet extends HttpServlet {
         try {
             filePart = request.getPart("file");
             Path path = Paths.get(filePart.getSubmittedFileName());
+            InputStream inputStream = filePart.getInputStream();
+            FileWriter writer = new FileWriter(path.toAbsolutePath().toFile());
+            while (inputStream.available() > 0) {
+                writer.write(inputStream.read());
+            }
+            writer.flush();
+            writer.close();
+
             LOGGER.info("input = \"" + path.toAbsolutePath() + "\"");
             String uploadFileName = path.getFileName().toString();
-
             LOGGER.info("getting file = \"" + uploadFileName + "\"");
 
+            XmlParser parser = new DomXmlParser();
+            LinkedList<AbstractPlantEntity> list = parser.parseFile(path.toAbsolutePath().toString());
+            StringBuilder builder = new StringBuilder();
+            for (AbstractPlantEntity entity : list) {
+                builder.append(entity.toHtml());
+            }
+            request.setAttribute("res", builder.toString());
             request.getRequestDispatcher("/pages/result.jsp").forward(request, response);
-        } catch (IOException e) {
-            LOGGER.catching(e);
-        } catch (ServletException e) {
+        } catch (IOException | ServletException | XmlException e) {
             LOGGER.catching(e);
         }
     }

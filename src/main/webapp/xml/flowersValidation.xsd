@@ -42,15 +42,25 @@
     <xs:element name="lighting" type="xs:boolean"/>
     <xs:element name="watering" type="xs:double"/>
 
-    <xs:element name="visualParameters">
-        <xs:complexType>
+    <xs:complexType name="visualBase">
+            <xs:all>
+                <xs:element ref="size"/>
+            </xs:all>
+    </xs:complexType>
+
+    <xs:complexType name="visualFull">
+        <xs:complexContent>
+        <xs:extension base="visualBase">
             <xs:all>
                 <xs:element ref="stalkColor"/>
                 <xs:element ref="leafColor"/>
-                <xs:element ref="size"/>
             </xs:all>
-        </xs:complexType>
-    </xs:element>
+        </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:element name="visualParameters" type="visualFull"/>
+
 
     <xs:element name="growingTips">
         <xs:complexType>

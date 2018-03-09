@@ -23,15 +23,21 @@
 </head>
 <body>
 <h1 class="alert-info"><fmt:message key="result" />:</h1>
-<br>
+<br/>
 <table border="1">
     <caption><fmt:message key="flower.header"/></caption>
+    <br/>
     <tr>
+        <th><fmt:message key="flower.id"/></th>
         <th><fmt:message key="flower.name"/></th>
         <th><fmt:message key="flower.soil"/></th>
         <th><fmt:message key="flower.origin"/></th>
-        <th><fmt:message key="flower.visual"/></th>
-        <th><fmt:message key="flower.tips"/></th>
+        <th><fmt:message key="flower.stalk"/></th>
+        <th><fmt:message key="flower.leaf"/></th>
+        <th><fmt:message key="flower.size"/></th>
+        <th><fmt:message key="flower.temperature"/></th>
+        <th><fmt:message key="flower.lighting"/></th>
+        <th><fmt:message key="flower.watering"/></th>
         <th><fmt:message key="flower.multiplying"/></th>
     </tr>
     ${res}
