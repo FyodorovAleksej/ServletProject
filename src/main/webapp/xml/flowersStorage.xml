@@ -7,7 +7,7 @@
     <wild id="0">
         <name>chamomile</name>
         <soil>ground</soil>
-        <origin>Eurasia</origin>
+        <origin>Europe</origin>
         <multiplying>seeds</multiplying>
         <visualParameters>
             <stalkColor>green</stalkColor>
@@ -29,38 +29,38 @@
     </micro>
 
     <wild id="2">
-        <name>react</name>
+        <name>nymphaea</name>
         <soil>podzolic</soil>
         <origin>Australia</origin>
-        <multiplying>spore</multiplying>
+        <multiplying>plant</multiplying>
         <visualParameters>
-            <stalkColor>white</stalkColor>
-            <leafColor>red</leafColor>
+            <stalkColor>green</stalkColor>
+            <leafColor>white</leafColor>
             <size>3.5</size>
         </visualParameters>
     </wild>
 
     <usual id="3">
-        <name>ters</name>
+        <name>nelumbo</name>
         <soil>ground-podzolic</soil>
         <origin>America</origin>
-        <multiplying>spore</multiplying>
+        <multiplying>plant</multiplying>
         <visualParameters>
-            <stalkColor>brown</stalkColor>
-            <leafColor>red</leafColor>
+            <stalkColor>green</stalkColor>
+            <leafColor>pink</leafColor>
             <size>2.4</size>
         </visualParameters>
         <growingTips>
             <temperature>2.2</temperature>
-            <lighting>false</lighting>
+            <lighting>true</lighting>
             <watering>14.2</watering>
         </growingTips>
     </usual>
 
     <micro id="4">
-        <name>vod</name>
+        <name>lotos</name>
         <soil>podzolic</soil>
-        <origin>America</origin>
+        <origin>Europe</origin>
         <multiplying>plant</multiplying>
         <growingTips>
             <temperature>2.3</temperature>
@@ -70,63 +70,162 @@
     </micro>
 
     <micro id="5">
-        <name>pod</name>
+        <name>alisma</name>
         <soil>ground-podzolic</soil>
-        <origin>Azia</origin>
-        <multiplying>spore</multiplying>
+        <origin>Europe</origin>
+        <multiplying>seeds</multiplying>
         <growingTips>
             <temperature>1.2</temperature>
             <lighting>true</lighting>
             <watering>55.3</watering>
         </growingTips>
     </micro>
+
     <wild id="6">
-        <name>aee</name>
+        <name>hydrilla</name>
         <soil>ground</soil>
-        <origin>Europe</origin>
-        <multiplying>plant</multiplying>
-        <visualParameters>
-            <stalkColor>yellow</stalkColor>
-            <leafColor>blue</leafColor>
-            <size>44.2</size>
-        </visualParameters>
-    </wild>
-    <wild id="7">
-        <name>igti</name>
-        <soil>ground-podzolic</soil>
         <origin>Azia</origin>
         <multiplying>seeds</multiplying>
         <visualParameters>
-            <stalkColor>black</stalkColor>
+            <stalkColor>green</stalkColor>
             <leafColor>green</leafColor>
-            <size>66.8</size>
+            <size>44.2</size>
         </visualParameters>
     </wild>
+
+    <micro id="7">
+        <name>elodea</name>
+        <soil>podzolic</soil>
+        <origin>America</origin>
+        <multiplying>spore</multiplying>
+        <growingTips>
+            <temperature>15.6</temperature>
+            <lighting>true</lighting>
+            <watering>52.3</watering>
+        </growingTips>
+    </micro>
+
     <wild id="8">
-        <name>opr</name>
+        <name>stratiotes</name>
+        <soil>podzolic</soil>
+        <origin>Europe</origin>
+        <multiplying>seeds</multiplying>
+        <visualParameters>
+            <stalkColor>yellow</stalkColor>
+            <leafColor>white</leafColor>
+            <size>4.5</size>
+        </visualParameters>
+    </wild>
+
+
+    <usual id="9">
+        <name>sagittaria</name>
+        <soil>ground</soil>
+        <origin>America</origin>
+        <multiplying>plant</multiplying>
+        <visualParameters>
+            <stalkColor>green</stalkColor>
+            <leafColor>yellow</leafColor>
+            <size>22.0</size>
+        </visualParameters>
+        <growingTips>
+            <temperature>14.2</temperature>
+            <lighting>true</lighting>
+            <watering>20.3</watering>
+        </growingTips>
+    </usual>
+
+    <micro id="10">
+        <name>triglochin</name>
+        <soil>podzolic</soil>
+        <origin>America</origin>
+        <multiplying>seeds</multiplying>
+        <growingTips>
+            <temperature>20.1</temperature>
+            <lighting>true</lighting>
+            <watering>18.6</watering>
+        </growingTips>
+    </micro>
+
+    <micro id="11">
+        <name>scheuchzeria</name>
+        <soil>ground</soil>
+        <origin>Europa</origin>
+        <multiplying>seeds</multiplying>
+        <growingTips>
+            <temperature>10.7</temperature>
+            <lighting>true</lighting>
+            <watering>11.6</watering>
+        </growingTips>
+    </micro>
+
+    <wild id="12">
+        <name>juncus</name>
+        <soil>ground-podzolic</soil>
+        <origin>Europe</origin>
+        <multiplying>seeds</multiplying>
+        <visualParameters>
+            <stalkColor>green</stalkColor>
+            <leafColor>red</leafColor>
+            <size>15.7</size>
+        </visualParameters>
+    </wild>
+
+    <micro id="13">
+        <name>aerphyton</name>
+        <soil>ground-podzolic</soil>
+        <origin>America</origin>
+        <multiplying>spore</multiplying>
+        <growingTips>
+            <temperature>7.6</temperature>
+            <lighting>false</lighting>
+            <watering>13.5</watering>
+        </growingTips>
+    </micro>
+
+    <usual id="14">
+        <name>epiphit</name>
+        <soil>ground-podzolic</soil>
+        <origin>America</origin>
+        <multiplying>seeds</multiplying>
+        <visualParameters>
+            <stalkColor>brown</stalkColor>
+            <leafColor>red</leafColor>
+            <size>27.3</size>
+        </visualParameters>
+        <growingTips>
+            <temperature>24.2</temperature>
+            <lighting>true</lighting>
+            <watering>25.5</watering>
+        </growingTips>
+    </usual>
+
+    <usual id="15">
+        <name>sciophit</name>
+        <soil>ground</soil>
+        <origin>America</origin>
+        <multiplying>spore</multiplying>
+        <visualParameters>
+            <stalkColor>white</stalkColor>
+            <leafColor>white</leafColor>
+            <size>6.3</size>
+        </visualParameters>
+        <growingTips>
+            <temperature>4.2</temperature>
+            <lighting>false</lighting>
+            <watering>11.2</watering>
+        </growingTips>
+    </usual>
+
+    <wild id="16">
+        <name>geliophit</name>
         <soil>podzolic</soil>
         <origin>Europe</origin>
         <multiplying>seeds</multiplying>
         <visualParameters>
             <stalkColor>brown</stalkColor>
-            <leafColor>white</leafColor>
-            <size>44.5</size>
+            <leafColor>green</leafColor>
+            <size>40.2</size>
         </visualParameters>
     </wild>
-    <usual id="9">
-        <name>grees</name>
-        <soil>ground</soil>
-        <origin>Europe</origin>
-        <multiplying>plant</multiplying>
-        <visualParameters>
-            <stalkColor>green</stalkColor>
-            <leafColor>green</leafColor>
-            <size>12.2</size>
-        </visualParameters>
-        <growingTips>
-            <temperature>23.2</temperature>
-            <lighting>true</lighting>
-            <watering>22.3</watering>
-        </growingTips>
-    </usual>
 </flowers>
