@@ -31,8 +31,10 @@ public class XmlSchemaValidator {
             validator.validate(new StreamSource(xmlFile));
         }
         catch (SAXException e) {
+            e.printStackTrace();
             return false;
         } catch (IOException e) {
+            e.printStackTrace();
             throw new XmlException("Can't read file", e);
         }
         return true;

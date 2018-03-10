@@ -36,16 +36,12 @@
 </form>
 <fmt:message key="send" var="se"/>
 <form action="main" method="post" enctype="multipart/form-data">
-    <input type="file" name="file" class="btn" value="OOO"/>
-    <button type="submit" class="btn btn-primary">${se}</button>
-</form>
-
-<form action="parser" method="post" enctype="multipart/form-data">
     <select id="parser" class="form-control" name="parser">
         <option value="DOM">DOM</option>
         <option value="SAX">SAX</option>
         <option value="StAX">StAX</option>
     </select>
+    <input type="file" name="file" class="btn" value="OOO"/>
     <button type="submit" class="btn btn-primary">${se}</button>
 </form>
 <!-- Optional JavaScript -->

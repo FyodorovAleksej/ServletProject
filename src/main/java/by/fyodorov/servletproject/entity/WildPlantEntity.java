@@ -1,6 +1,12 @@
 package by.fyodorov.servletproject.entity;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlType(propOrder = {"name", "soil", "origin", "multiplying", "stalkColor", "leafColor", "size"}, name = "wild")
+@XmlRootElement(name = "wild")
 public class WildPlantEntity extends AbstractPlantEntity {
+    private static final String TYPE = "wild";
     private PlantVisualEntity visualEntity;
 
     public WildPlantEntity() {
@@ -27,11 +33,6 @@ public class WildPlantEntity extends AbstractPlantEntity {
     public void setSize(double size) {
         visualEntity.setSize(size);
     }
-
-    public PlantVisualEntity getVisualEntity() {
-        return visualEntity;
-    }
-
 
     @Override
     public String toString() {
@@ -71,17 +72,18 @@ public class WildPlantEntity extends AbstractPlantEntity {
     }
 
     public String toHtml() {
-        return  "<tr><th>" + getId() + "</th>" +
-                "<th>" + getName() + "</th>" +
-                "<th>" + getSoil() + "</th>" +
-                "<th>" + getOrigin() + "</th>" +
-                "<th>" + getStalkColor() + "</th>" +
-                "<th>" + getLeafColor() + "</th>" +
-                "<th>" + getSize() + "</th>" +
-                "<th>" + "-" + "</th>" +
-                "<th>" + "-" + "</th>" +
-                "<th>" + "-" + "</th>" +
-                "<th>" + getMultiplying() + "</th></tr>";
+        return  LINE_START + CELL_SEPARATOR_START + getId() + CELL_SEPARATOR_END +
+                CELL_SEPARATOR_START + TYPE +             CELL_SEPARATOR_END +
+                CELL_SEPARATOR_START + getName() +        CELL_SEPARATOR_END +
+                CELL_SEPARATOR_START + getSoil() +        CELL_SEPARATOR_END +
+                CELL_SEPARATOR_START + getOrigin() +      CELL_SEPARATOR_END +
+                CELL_SEPARATOR_START + getStalkColor() +  CELL_SEPARATOR_END +
+                CELL_SEPARATOR_START + getLeafColor() +   CELL_SEPARATOR_END +
+                CELL_SEPARATOR_START + getSize() +        CELL_SEPARATOR_END +
+                CELL_SEPARATOR_START + NONE_VALUE +       CELL_SEPARATOR_END +
+                CELL_SEPARATOR_START + NONE_VALUE +       CELL_SEPARATOR_END +
+                CELL_SEPARATOR_START + NONE_VALUE +       CELL_SEPARATOR_END +
+                CELL_SEPARATOR_START + getMultiplying() + CELL_SEPARATOR_END + LINE_END;
     }
 
 }

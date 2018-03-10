@@ -1,17 +1,17 @@
 package by.fyodorov.servletproject.entity;
 
-//@XmlType(propOrder = { "id", "name", "soil", "origin", "visualEntity", "tipEntity", "multiplying"}, name = "flower")
-//@XmlRootElement(name = "flower")
 public abstract class AbstractPlantEntity {
+    static final String LINE_START = "<tr>";
+    static final String LINE_END = "</tr>";
+    static final String CELL_SEPARATOR_START = "<th>";
+    static final String CELL_SEPARATOR_END = "</th>";
+    static final String NONE_VALUE = "-";
+
     protected int id;
     protected String name;
     protected String soil;
     protected String origin;
     protected String multiplying;
-
-
-    public AbstractPlantEntity() {
-    }
 
     public int getId() {
         return id;

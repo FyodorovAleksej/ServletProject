@@ -1,6 +1,15 @@
 package by.fyodorov.servletproject.entity;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlType(propOrder = {"name", "soil", "origin", "multiplying", "temperature", "lighting", "watering"}, name = "micro")
+@XmlRootElement(name = "micro")
 public class MicroPlantEntity extends AbstractPlantEntity {
+    private static final String TYPE = "micro";
+
+    @XmlElement(name = "growingTips")
     private PlantTipEntity tipEntity;
 
     public MicroPlantEntity() {
@@ -67,16 +76,17 @@ public class MicroPlantEntity extends AbstractPlantEntity {
     }
 
     public String toHtml() {
-        return  "<tr><th>" + getId() + "</th>" +
-                "<th>" + getName() + "</th>" +
-                "<th>" + getSoil() + "</th>" +
-                "<th>" + getOrigin() + "</th>" +
-                "<th>" + "-" + "</th>" +
-                "<th>" + "-" + "</th>" +
-                "<th>" + "-" + "</th>" +
-                "<th>" + getTemperature() + "</th>" +
-                "<th>" + isLighting() + "</th>" +
-                "<th>" + getWatering() + "</th>" +
-                "<th>" + getMultiplying() + "</th></tr>";
+        return  LINE_START + CELL_SEPARATOR_START + getId() + CELL_SEPARATOR_END +
+                CELL_SEPARATOR_START + TYPE +             CELL_SEPARATOR_END +
+                CELL_SEPARATOR_START + getName() +        CELL_SEPARATOR_END +
+                CELL_SEPARATOR_START + getSoil() +        CELL_SEPARATOR_END +
+                CELL_SEPARATOR_START + getOrigin() +      CELL_SEPARATOR_END +
+                CELL_SEPARATOR_START + NONE_VALUE +       CELL_SEPARATOR_END +
+                CELL_SEPARATOR_START + NONE_VALUE +       CELL_SEPARATOR_END +
+                CELL_SEPARATOR_START + NONE_VALUE +       CELL_SEPARATOR_END +
+                CELL_SEPARATOR_START + getTemperature() + CELL_SEPARATOR_END +
+                CELL_SEPARATOR_START + isLighting() +     CELL_SEPARATOR_END +
+                CELL_SEPARATOR_START + getWatering() +    CELL_SEPARATOR_END +
+                CELL_SEPARATOR_START + getMultiplying() + CELL_SEPARATOR_END + LINE_END;
     }
 }

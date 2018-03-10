@@ -3,6 +3,8 @@ package by.fyodorov.servletproject.connector;
 import by.fyodorov.servletproject.entity.AbstractPlantEntity;
 import by.fyodorov.servletproject.exception.XmlException;
 import by.fyodorov.servletproject.parser.DomXmlParser;
+import by.fyodorov.servletproject.parser.SaxXmlParser;
+import by.fyodorov.servletproject.parser.StaxXmlParser;
 import by.fyodorov.servletproject.parser.XmlParser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,25 +20,29 @@ import java.nio.file.Paths;
 import java.util.LinkedList;
 
 public class MainServlet extends HttpServlet {
-
     private final Logger LOGGER = LogManager.getLogger(MainServlet.class);
+    private static final String PARSER_KEY = "parser";
+
+    private static final String DOM_PARSER = "DOM";
+    private static final String SAX_PARSER = "SAX";
+    private static final String StAX_PARSER = "StAX";
 
     public MainServlet() {
         super();
     }
 
     @Override
-    public void init() throws ServletException {
+    public void init() {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         LOGGER.info("GET method");
         processRequest(req, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         LOGGER.info("POST method");
         processRequest(req, resp);
     }
@@ -46,14 +52,14 @@ public class MainServlet extends HttpServlet {
         super.destroy();
     }
 
-    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void processRequest(HttpServletRequest request, HttpServletResponse response) {
         try {
             request.setCharacterEncoding("UTF-8");
         } catch (UnsupportedEncodingException e) {
             LOGGER.catching(e);
         }
 
-        Part filePart = null;
+        Part filePart;
         try {
             filePart = request.getPart("file");
             Path path = Paths.get(filePart.getSubmittedFileName());
@@ -69,7 +75,26 @@ public class MainServlet extends HttpServlet {
             String uploadFileName = path.getFileName().toString();
             LOGGER.info("getting file = \"" + uploadFileName + "\"");
 
-            XmlParser parser = new DomXmlParser();
+            XmlParser parser;
+            String selectedParser = request.getParameter(PARSER_KEY);
+            switch (selectedParser) {
+                case DOM_PARSER: {
+                    parser = new DomXmlParser();
+                    break;
+                }
+                case SAX_PARSER: {
+                    parser = new SaxXmlParser();
+                    break;
+                }
+                case StAX_PARSER: {
+                    parser = new StaxXmlParser();
+                    break;
+                }
+                default: {
+                    parser = new DomXmlParser();
+                }
+            }
+
             LinkedList<AbstractPlantEntity> list = parser.parseFile(path.toAbsolutePath().toString());
             StringBuilder builder = new StringBuilder();
             for (AbstractPlantEntity entity : list) {

@@ -29,6 +29,7 @@
     <br/>
     <tr>
         <th><fmt:message key="flower.id"/></th>
+        <th><fmt:message key="flower.type"/></th>
         <th><fmt:message key="flower.name"/></th>
         <th><fmt:message key="flower.soil"/></th>
         <th><fmt:message key="flower.origin"/></th>

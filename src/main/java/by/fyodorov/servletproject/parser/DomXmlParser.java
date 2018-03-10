@@ -1,5 +1,6 @@
 package by.fyodorov.servletproject.parser;
 
+import by.fyodorov.servletproject.comporator.PlantAbstractComparator;
 import by.fyodorov.servletproject.entity.AbstractPlantEntity;
 import by.fyodorov.servletproject.entity.MicroPlantEntity;
 import by.fyodorov.servletproject.entity.UsualPlantEntity;
@@ -58,7 +59,10 @@ public class DomXmlParser implements XmlParser {
             for (int temp = 0; temp < microList.getLength(); temp++) {
                 list.add(parseFromXML(microList.item(temp)));
             }
+
+            list.sort(new PlantAbstractComparator());
             return list;
+
         } catch (ParserConfigurationException e) {
             throw new XmlException("Invalid configuration", e);
         } catch (IOException e) {

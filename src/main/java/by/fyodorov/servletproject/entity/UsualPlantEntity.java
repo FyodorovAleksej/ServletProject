@@ -1,7 +1,18 @@
 package by.fyodorov.servletproject.entity;
 
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlType(propOrder = {"name", "soil", "origin", "multiplying", "stalkColor", "leafColor", "size", "temperature", "lighting", "watering"}, name = "usual")
+@XmlRootElement(name = "usual")
 public class UsualPlantEntity extends AbstractPlantEntity {
+    private static final String TYPE = "usual";
+
+    @XmlElement(name = "visualParameters")
     private PlantVisualEntity visualEntity;
+    @XmlElement(name = "growingTips")
     private PlantTipEntity tipEntity;
 
     public UsualPlantEntity() {
@@ -48,13 +59,6 @@ public class UsualPlantEntity extends AbstractPlantEntity {
         tipEntity.setWatering(watering);
     }
 
-    public PlantVisualEntity getVisualEntity() {
-        return visualEntity;
-    }
-    public PlantTipEntity getTipEntity() {
-        return tipEntity;
-    }
-
 
     @Override
     public String toString() {
@@ -97,16 +101,17 @@ public class UsualPlantEntity extends AbstractPlantEntity {
     }
 
     public String toHtml() {
-        return  "<tr><th>" + getId() + "</th>" +
-                "<th>" + getName() + "</th>" +
-                "<th>" + getSoil() + "</th>" +
-                "<th>" + getOrigin() + "</th>" +
-                "<th>" + getStalkColor() + "</th>" +
-                "<th>" + getLeafColor() + "</th>" +
-                "<th>" + getSize() + "</th>" +
-                "<th>" + getTemperature() + "</th>" +
-                "<th>" + isLighting() + "</th>" +
-                "<th>" + getWatering() + "</th>" +
-                "<th>" + getMultiplying() + "</th></tr>";
+        return  LINE_START + CELL_SEPARATOR_START + getId() + CELL_SEPARATOR_END +
+                CELL_SEPARATOR_START + TYPE +             CELL_SEPARATOR_END +
+                CELL_SEPARATOR_START + getName() +        CELL_SEPARATOR_END +
+                CELL_SEPARATOR_START + getSoil() +        CELL_SEPARATOR_END +
+                CELL_SEPARATOR_START + getOrigin() +      CELL_SEPARATOR_END +
+                CELL_SEPARATOR_START + getStalkColor() +  CELL_SEPARATOR_END +
+                CELL_SEPARATOR_START + getLeafColor() +   CELL_SEPARATOR_END +
+                CELL_SEPARATOR_START + getSize() +        CELL_SEPARATOR_END +
+                CELL_SEPARATOR_START + getTemperature() + CELL_SEPARATOR_END +
+                CELL_SEPARATOR_START + isLighting() +     CELL_SEPARATOR_END +
+                CELL_SEPARATOR_START + getWatering() +    CELL_SEPARATOR_END +
+                CELL_SEPARATOR_START + getMultiplying() + CELL_SEPARATOR_END + LINE_END;
     }
 }

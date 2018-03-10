@@ -1,4 +1,6 @@
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
     <xs:element name="name" default="unnamed">
         <xs:simpleType>
             <xs:restriction base="xs:string">
@@ -42,25 +44,16 @@
     <xs:element name="lighting" type="xs:boolean"/>
     <xs:element name="watering" type="xs:double"/>
 
-    <xs:complexType name="visualBase">
-            <xs:all>
-                <xs:element ref="size"/>
-            </xs:all>
-    </xs:complexType>
 
-    <xs:complexType name="visualFull">
-        <xs:complexContent>
-        <xs:extension base="visualBase">
+    <xs:element name="visualParameters">
+        <xs:complexType>
             <xs:all>
                 <xs:element ref="stalkColor"/>
                 <xs:element ref="leafColor"/>
+                <xs:element ref="size"/>
             </xs:all>
-        </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-
-    <xs:element name="visualParameters" type="visualFull"/>
-
+        </xs:complexType>
+    </xs:element>
 
     <xs:element name="growingTips">
         <xs:complexType>
@@ -72,19 +65,53 @@
         </xs:complexType>
     </xs:element>
 
-    <xs:element name="flower">
-        <xs:complexType>
-            <xs:all>
-                <xs:element ref="name"/>
-                <xs:element ref="soil"/>
-                <xs:element ref="origin"/>
-                <xs:element ref="visualParameters"/>
-                <xs:element ref="growingTips"/>
-                <xs:element ref="multiplying"/>
-            </xs:all>
-            <xs:attribute type="xs:ID" name="id"/>
-        </xs:complexType>
-    </xs:element>
+    <xs:complexType name = "flowerBase">
+        <xs:all>
+            <xs:element ref="name"/>
+            <xs:element ref="soil"/>
+            <xs:element ref="origin"/>
+            <xs:element ref="multiplying"/>
+        </xs:all>
+        <xs:attribute type="xs:ID" name="id"/>
+    </xs:complexType>
+
+    <xs:complexType name="wildType">
+        <xs:complexContent>
+            <xs:extension base="flowerBase">
+                <xs:all>
+                    <xs:element ref="visualParameters"/>
+                </xs:all>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="microType">
+        <xs:complexContent>
+            <xs:extension base="flowerBase">
+                <xs:all>
+                    <xs:element ref="growingTips"/>
+                </xs:all>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="usualType">
+        <xs:complexContent>
+            <xs:extension base="flowerBase">
+                <xs:all>
+                    <xs:element ref="visualParameters"/>
+                    <xs:element ref="growingTips"/>
+                </xs:all>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:element name="flower" type="flowerBase" abstract="true"/>
+
+    <xs:element name="wild" type="wildType" substitutionGroup="flower"/>
+    <xs:element name="micro" type="microType" substitutionGroup="flower"/>
+    <xs:element name="usual" type="usualType" substitutionGroup="flower"/>
+
 
     <xs:element name="flowers">
         <xs:complexType>

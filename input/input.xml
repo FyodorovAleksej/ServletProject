@@ -1,35 +1,49 @@
-<flowers>
-    <wild id="0">
-        <name>chamomile</name>
-        <soil>ground</soil>
-        <origin>Eurasia</origin>
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 
+
+<!--The list of tour flowers-->
+<flowers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xmlns="http://www.fyodorov.by/flowers"
+                  xsi:schemaLocation="http://www.fyodorov.by/flowers flowersValidation.xsd">
+
+        <wild id="0">
+            <name>chamomile</name>
+            <soil>ground</soil>
+            <origin>Eurasia</origin>
+            <multiplying>seeds</multiplying>
+            <visualParameters>
+                <stalkColor>green</stalkColor>
+                <leafColor>white</leafColor>
+                <size>20</size>
+            </visualParameters>
+        </wild>
+
+        <micro id="1">
+            <name>galanthus</name>
+            <soil>ground</soil>
+            <origin>Europe</origin>
+            <multiplying>seeds</multiplying>
+            <growingTips>
+                <temperature>10</temperature>
+                <lighting>true</lighting>
+                <watering>40</watering>
+            </growingTips>
+        </micro>
+
+    <usual id="2">
+        <name>ass</name>
+        <soil>ground</soil>
+        <origin>EUROPE</origin>
+        <multiplying>spore</multiplying>
         <visualParameters>
             <stalkColor>green</stalkColor>
             <leafColor>white</leafColor>
-            <size>20</size>
+            <size>45</size>
         </visualParameters>
-
-        <multiplying>seeds</multiplying>
-    </wild>
-
-    <usual id="1">
-        <name>galanthus</name>
-        <soil>ground</soil>
-        <origin>Europe</origin>
-
-        <visualParameters>
-            <stalkColor>green</stalkColor>
-            <leafColor>white</leafColor>
-            <size>30</size>
-        </visualParameters>
-
         <growingTips>
-            <temperature>10</temperature>
+            <temperature>56</temperature>
             <lighting>true</lighting>
-            <watering>40</watering>
+            <watering>12.5</watering>
         </growingTips>
-
-        <multiplying>seeds</multiplying>
     </usual>
 </flowers>
