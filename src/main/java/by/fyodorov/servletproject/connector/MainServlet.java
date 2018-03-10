@@ -84,7 +84,7 @@ public class MainServlet extends HttpServlet {
             XmlSchemaValidator validator = new XmlSchemaValidator();
             request.setAttribute(VALIDATE_KEY, validator.validate(getServletContext().getRealPath(XSD_PATH), getServletContext().getRealPath(CLONE_XML)));
             XmlParser parser = getParser(request.getParameter(PARSER_KEY));
-            LinkedList<AbstractPlantEntity> list = parser.parseFile(path.toAbsolutePath().toString());
+            LinkedList<AbstractPlantEntity> list = parser.parseFile(getServletContext().getRealPath(CLONE_XML));
             StringBuilder builder = new StringBuilder();
             for (AbstractPlantEntity entity : list) {
                 builder.append(entity.toHtml());

@@ -14,7 +14,6 @@
         </complexType>
     </element>
 
-
     <element name="flower" type="flw:common-flower" abstract="true"></element>
     <element name="wild" type="flw:wildType-flower" substitutionGroup="flw:flower"></element>
     <element name="micro" type="flw:microType-flower" substitutionGroup="flw:flower"></element>

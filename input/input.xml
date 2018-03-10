@@ -28,20 +28,105 @@
             </growingTips>
         </micro>
 
-    <usual id="2">
-        <name>ass</name>
-        <soil>ground</soil>
-        <origin>EUROPE</origin>
-        <multiplying>spore</multiplying>
-        <visualParameters>
-            <stalkColor>green</stalkColor>
-            <leafColor>white</leafColor>
-            <size>45</size>
-        </visualParameters>
-        <growingTips>
-            <temperature>56</temperature>
-            <lighting>true</lighting>
-            <watering>12.5</watering>
-        </growingTips>
-    </usual>
+        <wild id="2">
+            <name>react</name>
+            <soil>podzolic</soil>
+            <origin>Australia</origin>
+            <multiplying>spore</multiplying>
+            <visualParameters>
+                <stalkColor>white</stalkColor>
+                <leafColor>red</leafColor>
+                <size>3.5</size>
+            </visualParameters>
+        </wild>
+
+        <usual id="3">
+            <name>ters</name>
+            <soil>ground-podzolic</soil>
+            <origin>America</origin>
+            <multiplying>spore</multiplying>
+            <visualParameters>
+                <stalkColor>brown</stalkColor>
+                <leafColor>red</leafColor>
+                <size>2.4</size>
+            </visualParameters>
+            <growingTips>
+                <temperature>2.2</temperature>
+                <lighting>false</lighting>
+                <watering>14.2</watering>
+            </growingTips>
+        </usual>
+
+        <micro id="4">
+            <name>vod</name>
+            <soil>podzolic</soil>
+            <origin>America</origin>
+            <multiplying>plant</multiplying>
+            <growingTips>
+                <temperature>2.3</temperature>
+                <lighting>false</lighting>
+                <watering>75.3</watering>
+            </growingTips>
+        </micro>
+
+        <micro id="5">
+            <name>pod</name>
+            <soil>ground-podzolic</soil>
+            <origin>Azia</origin>
+            <multiplying>spore</multiplying>
+            <growingTips>
+                <temperature>1.2</temperature>
+                <lighting>true</lighting>
+                <watering>55.3</watering>
+            </growingTips>
+        </micro>
+               <wild id="6">
+            <name>aee</name>
+            <soil>ground</soil>
+            <origin>Europe</origin>
+            <multiplying>plant</multiplying>
+            <visualParameters>
+                <stalkColor>yellow</stalkColor>
+                <leafColor>blue</leafColor>
+                <size>44.2</size>
+            </visualParameters>
+        </wild>
+               <wild id="7">
+            <name>igti</name>
+            <soil>ground-podzolic</soil>
+            <origin>Azia</origin>
+            <multiplying>seeds</multiplying>
+            <visualParameters>
+                <stalkColor>black</stalkColor>
+                <leafColor>green</leafColor>
+                <size>66.8</size>
+            </visualParameters>
+        </wild>
+               <wild id="8">
+            <name>opr</name>
+            <soil>podzolic</soil>
+            <origin>Europe</origin>
+            <multiplying>seeds</multiplying>
+            <visualParameters>
+                <stalkColor>brown</stalkColor>
+                <leafColor>white</leafColor>
+                <size>44.5</size>
+            </visualParameters>
+        </wild>
+               <usual id="9">
+            <name>grees</name>
+            <soil>ground</soil>
+            <origin>Europe</origin>
+            <multiplying>plant</multiplying>
+            <visualParameters>
+                <stalkColor>green</stalkColor>
+                <leafColor>green</leafColor>
+                <size>12.2</size>
+            </visualParameters>
+            <growingTips>
+                <temperature>23.2</temperature>
+                <lighting>true</lighting>
+                <watering>22.3</watering>
+            </growingTips>
+        </usual>
 </flowers>
