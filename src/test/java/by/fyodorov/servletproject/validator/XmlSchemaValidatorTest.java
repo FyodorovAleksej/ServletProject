@@ -8,18 +8,12 @@ import org.testng.annotations.Test;
 import static org.testng.Assert.*;
 
 public class XmlSchemaValidatorTest {
-
-    @BeforeMethod
-    public void setUp() throws Exception {
-    }
-
-    @AfterMethod
-    public void tearDown() throws Exception {
-    }
+    private static final String XML_PATH = "input/input.xml";
+    private static final String XSD_PATH = "input/flowersValidation.xsd";
 
     @Test
     public void testValidate() throws Exception {
         XmlSchemaValidator validator = new XmlSchemaValidator();
-        Assert.assertTrue(validator.validate("input/flowersValidation.xsd", "input/input.xml"));
+        Assert.assertTrue(validator.validate(XSD_PATH, XML_PATH));
     }
 }

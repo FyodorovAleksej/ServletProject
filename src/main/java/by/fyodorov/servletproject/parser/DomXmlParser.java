@@ -23,14 +23,18 @@ import java.util.LinkedList;
 
 import static by.fyodorov.servletproject.parser.FlowerAttribute.*;
 
+/**
+ * class for DOM parsing file
+ */
 public class DomXmlParser implements XmlParser {
     private static final Logger LOGGER = LogManager.getLogger(DomXmlParser.class);
 
+
     /**
-     * Parse XML file for getting array of people, saving in file
-     *
-     * @param path the path of xml file for parse
-     * @return the array of people in xml file (path)
+     * parsing file to list of flowers
+     * @param path - path of XML file for parsing
+     * @return - list of flowers from this XML file
+     * @throws XmlException - if can't read file for parsing
      */
     public LinkedList<AbstractPlantEntity> parseFile(String path) throws XmlException {
         try {
@@ -39,29 +43,29 @@ public class DomXmlParser implements XmlParser {
             if (!inputFile.exists()) {
                 throw new XmlException("File = \"" + path + "\" doesn't exist");
             }
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(inputFile);
-            doc.getDocumentElement().normalize();
-            LinkedList<AbstractPlantEntity> list = new LinkedList<>();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document document = documentBuilder.parse(inputFile);
+            document.getDocumentElement().normalize();
+            LinkedList<AbstractPlantEntity> abstractPlantEntities = new LinkedList<>();
 
-            NodeList usualList = doc.getElementsByTagName(USUAL_ATTRIBUTE.getValue());
-            for (int temp = 0; temp < usualList.getLength(); temp++) {
-                list.add(parseFromXML(usualList.item(temp)));
+            NodeList usualPlantList = document.getElementsByTagName(USUAL_ATTRIBUTE.getValue());
+            for (int temp = 0; temp < usualPlantList.getLength(); temp++) {
+                abstractPlantEntities.add(parseFromXML(usualPlantList.item(temp)));
             }
 
-            NodeList wildList = doc.getElementsByTagName(WILD_ATTRIBUTE.getValue());
-            for (int temp = 0; temp < wildList.getLength(); temp++) {
-                list.add(parseFromXML(wildList.item(temp)));
+            NodeList wildPlantList = document.getElementsByTagName(WILD_ATTRIBUTE.getValue());
+            for (int temp = 0; temp < wildPlantList.getLength(); temp++) {
+                abstractPlantEntities.add(parseFromXML(wildPlantList.item(temp)));
             }
 
-            NodeList microList = doc.getElementsByTagName(MICRO_ATTRIBUTE.getValue());
-            for (int temp = 0; temp < microList.getLength(); temp++) {
-                list.add(parseFromXML(microList.item(temp)));
+            NodeList microPlantList = document.getElementsByTagName(MICRO_ATTRIBUTE.getValue());
+            for (int temp = 0; temp < microPlantList.getLength(); temp++) {
+                abstractPlantEntities.add(parseFromXML(microPlantList.item(temp)));
             }
 
-            list.sort(new PlantAbstractComparator());
-            return list;
+            abstractPlantEntities.sort(new PlantAbstractComparator());
+            return abstractPlantEntities;
 
         } catch (ParserConfigurationException e) {
             throw new XmlException("Invalid configuration", e);
@@ -72,11 +76,11 @@ public class DomXmlParser implements XmlParser {
         }
     }
 
+
     /**
-     * Parse XML file for getting user with @param index from this xml file
-     *
-     * @param node  the path of xml file for parsing
-     * @return the user with @param index
+     * parsing node of XML file to flower
+     * @param node - node of XML file
+     * @return created flower
      */
     private AbstractPlantEntity parseFromXML(Node node) {
         Element element = (Element) node;
@@ -110,6 +114,11 @@ public class DomXmlParser implements XmlParser {
         return null;
     }
 
+    /**
+     * filling flower with parameters
+     * @param entity - entity for filling
+     * @param node - node with information
+     */
     private void fillFlower(AbstractPlantEntity entity, Node node) {
         entity.setId(Integer.valueOf(((Element)node).getAttribute(ID_ATTRIBUTE.getValue())));
         entity.setName(getXMLArgument(node, NAME_ATTRIBUTE.getValue()));
@@ -118,13 +127,11 @@ public class DomXmlParser implements XmlParser {
         entity.setMultiplying(getXMLArgument(node, MULTIPLYING_ATTRIBUTE.getValue()));
     }
 
-
     /**
-     * private method for getting value of attribute from Node in XML file
-     *
-     * @param node     the Node in XML file
-     * @param attribute the name of attribute to getting it value
-     * @return the value of this argument
+     * getting XML argument from node with name of attribute
+     * @param node - node with information
+     * @param attribute - name for getting attribute
+     * @return the value of attribute
      */
     private static String getXMLArgument(Node node, String attribute) {
         LOGGER.info("getting attribute = \"" + attribute + "\"");

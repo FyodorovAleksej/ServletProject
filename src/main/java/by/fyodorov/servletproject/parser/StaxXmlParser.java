@@ -16,41 +16,50 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+/**
+ * class for StAX parsing
+ */
 public class StaxXmlParser implements XmlParser {
 
     private static final Logger LOGGER = LogManager.getLogger(StaxXmlParser.class);
 
+    /**
+     * parsing file to list of flowers
+     * @param path - path of XML file for parsing
+     * @return - list of flowers from this XML file
+     * @throws XmlException - if can't read file for parsing
+     */
     @Override
     public LinkedList<AbstractPlantEntity> parseFile(String path) throws XmlException {
+        LOGGER.info("Stax parsing file = \"" + path + "\"");
         SaxHandler handler = new SaxHandler();
 
         try {
-            XMLInputFactory factory = XMLInputFactory.newInstance();
-            XMLEventReader eventReader = factory.createXMLEventReader(new FileReader(path));
+            XMLInputFactory xmlFactory = XMLInputFactory.newInstance();
+            XMLEventReader eventReader = xmlFactory.createXMLEventReader(new FileReader(path));
             while (eventReader.hasNext()) {
                 XMLEvent event = eventReader.nextEvent();
                 switch (event.getEventType()) {
                     case XMLStreamConstants.START_ELEMENT: {
                         StartElement startElement = event.asStartElement();
                         String qName = startElement.getName().getLocalPart();
-                        Iterator iterator = startElement.getAttributes();
-                        HashMap<String, String> map = new HashMap<>();
-                        while (iterator.hasNext()) {
-                            Attribute attribute = (Attribute) iterator.next();
-                            map.put(attribute.getName().getLocalPart(), attribute.getValue());
-                            LOGGER.debug("key = \"" + attribute.getName() + "\"; value = \"" + attribute.getValue() + "\"");
+                        Iterator attributeIterator = startElement.getAttributes();
+                        HashMap<String, String> attributeMap = new HashMap<>();
+                        while (attributeIterator.hasNext()) {
+                            Attribute attribute = (Attribute) attributeIterator.next();
+                            attributeMap.put(attribute.getName().getLocalPart(), attribute.getValue());
                         }
-                        handler.startHandler(qName, map);
+                        handler.commonStartHandler(qName, attributeMap);
                         break;
                     }
                     case XMLStreamConstants.CHARACTERS: {
                         Characters characters = event.asCharacters();
-                        handler.charactersHandler(characters.getData());
+                        handler.commonCharactersHandler(characters.getData());
                         break;
                     }
                     case XMLStreamConstants.END_ELEMENT: {
                         EndElement endElement = event.asEndElement();
-                        handler.endHandler(endElement.getName().getLocalPart());
+                        handler.commonEndHandler(endElement.getName().getLocalPart());
                         break;
                     }
                 }

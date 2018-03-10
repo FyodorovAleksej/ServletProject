@@ -3,6 +3,9 @@ package by.fyodorov.servletproject.entity;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+/**
+ * class of wild flower
+ */
 @XmlType(propOrder = {"name", "soil", "origin", "multiplying", "stalkColor", "leafColor", "size"}, name = "wild")
 @XmlRootElement(name = "wild")
 public class WildPlantEntity extends AbstractPlantEntity {
@@ -13,23 +16,52 @@ public class WildPlantEntity extends AbstractPlantEntity {
         this.visualEntity = new PlantVisualEntity();
     }
 
+    /**
+     * getting stalkColor
+     * @return - color of stalk of current flower
+     */
     public String getStalkColor() {
         return visualEntity.getStalkColor();
     }
+
+    /**
+     * getting leafColor
+     * @return - color of leaf of current flower
+     */
     public String getLeafColor() {
         return visualEntity.getLeafColor();
     }
+
+    /**
+     * getting size
+     * @return - size of current flower
+     */
     public double getSize() {
         return visualEntity.getSize();
     }
 
 
+
+    /**
+     * setting stalkColor
+     * @param stalkColor - color of stalk of current flower
+     */
     public void setStalkColor(String stalkColor) {
         visualEntity.setStalkColor(stalkColor);
     }
+
+    /**
+     * setting leafColor
+     * @param leafColor - color of leaf of current flower
+     */
     public void setLeafColor(String leafColor) {
         visualEntity.setLeafColor(leafColor);
     }
+
+    /**
+     * setting size
+     * @param size - size of current flower
+     */
     public void setSize(double size) {
         visualEntity.setSize(size);
     }
@@ -71,6 +103,11 @@ public class WildPlantEntity extends AbstractPlantEntity {
                 multiplying.hashCode();
     }
 
+    /**
+     * transform current flower to format for HTML table
+     * @return form for HTML table
+     */
+    @Override
     public String toHtml() {
         return  LINE_START + CELL_SEPARATOR_START + getId() + CELL_SEPARATOR_END +
                 CELL_SEPARATOR_START + TYPE +             CELL_SEPARATOR_END +

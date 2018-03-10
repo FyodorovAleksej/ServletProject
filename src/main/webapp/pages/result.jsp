@@ -22,7 +22,7 @@
     <title>Result</title>
 </head>
 <body>
-<h1 class="alert-info"><fmt:message key="result" />:</h1>
+<h1 class="alert-info"><fmt:message key="result"/>:${validate}</h1>
 <br/>
 <table border="1">
     <caption><fmt:message key="flower.header"/></caption>
@@ -41,7 +41,7 @@
         <th><fmt:message key="flower.watering"/></th>
         <th><fmt:message key="flower.multiplying"/></th>
     </tr>
-    ${res}
+    ${result}
 </table>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->

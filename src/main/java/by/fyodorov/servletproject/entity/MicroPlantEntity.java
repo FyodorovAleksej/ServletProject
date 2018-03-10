@@ -4,6 +4,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+/**
+ * class of micro flowers
+ */
 @XmlType(propOrder = {"name", "soil", "origin", "multiplying", "temperature", "lighting", "watering"}, name = "micro")
 @XmlRootElement(name = "micro")
 public class MicroPlantEntity extends AbstractPlantEntity {
@@ -16,23 +19,51 @@ public class MicroPlantEntity extends AbstractPlantEntity {
         this.tipEntity = new PlantTipEntity();
     }
 
+    /**
+     * getting temperature
+     * @return - temperature for current flower
+     */
     public double getTemperature() {
         return tipEntity.getTemperature();
     }
+
+    /**
+     * getting lighting
+     * @return - lighting for current flower
+     */
     public boolean isLighting() {
         return tipEntity.isLighting();
     }
+
+    /**
+     * getting watering
+     * @return - count of watering for current flower
+     */
     public double getWatering() {
         return tipEntity.getWatering();
     }
 
 
+    /**
+     * setting temperature
+     * @param temperature - temperature for current flower
+     */
     public void setTemperature(double temperature) {
         tipEntity.setTemperature(temperature);
     }
+
+    /**
+     * setting lighting
+     * @param lighting - lighting for current flower
+     */
     public void setLighting(boolean lighting) {
         tipEntity.setLighting(lighting);
     }
+
+    /**
+     * setting watering
+     * @param watering - count of watering for current flower
+     */
     public void setWatering(double watering) {
         tipEntity.setWatering(watering);
     }
@@ -75,6 +106,12 @@ public class MicroPlantEntity extends AbstractPlantEntity {
                 multiplying.hashCode();
     }
 
+
+    /**
+     * transform flower object to format for table in HTML
+     * @return string for HTML table
+     */
+    @Override
     public String toHtml() {
         return  LINE_START + CELL_SEPARATOR_START + getId() + CELL_SEPARATOR_END +
                 CELL_SEPARATOR_START + TYPE +             CELL_SEPARATOR_END +

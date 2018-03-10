@@ -1,11 +1,13 @@
 package by.fyodorov.servletproject.parser;
 
+/**
+ * enum with parameters into XML
+ */
 public enum FlowerAttribute {
     WILD_ATTRIBUTE("wild"),
     MICRO_ATTRIBUTE("micro"),
     USUAL_ATTRIBUTE("usual"),
 
-    FLOWER_NODE("flower"),
     ID_ATTRIBUTE("id"),
     NAME_ATTRIBUTE("name"),
     SOIL_ATTRIBUTE("soil"),
@@ -28,10 +30,18 @@ public enum FlowerAttribute {
         this.value = value;
     }
 
+    /**
+     * getting value for quality attribute
+     * @return value
+     */
     public String getValue() {
         return value;
     }
 
+    /**
+     * getting code for SAX parser for identity attribute in SAX parser
+     * @return code for parameter
+     */
     public byte getCode() {
         return (byte) ordinal();
     }

@@ -6,6 +6,7 @@ import by.fyodorov.servletproject.parser.DomXmlParser;
 import by.fyodorov.servletproject.parser.SaxXmlParser;
 import by.fyodorov.servletproject.parser.StaxXmlParser;
 import by.fyodorov.servletproject.parser.XmlParser;
+import by.fyodorov.servletproject.validator.XmlSchemaValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,6 +20,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedList;
 
+/**
+ * class for handling Http requests
+ */
 public class MainServlet extends HttpServlet {
     private final Logger LOGGER = LogManager.getLogger(MainServlet.class);
     private static final String PARSER_KEY = "parser";
@@ -27,44 +31,46 @@ public class MainServlet extends HttpServlet {
     private static final String SAX_PARSER = "SAX";
     private static final String StAX_PARSER = "StAX";
 
-    public MainServlet() {
-        super();
-    }
+    private static final String FILE_KEY = "file";
+    private static final String RESULT_KEY = "result";
+    private static final String VALIDATE_KEY = "validate";
+    private static final String NEXT_PAGE_PATH = "/pages/result.jsp";
+    private static final String XSD_PATH = "/xml/flowersValidation.xsd";
+    private static final String CLONE_XML = "/xml/clone.xml";
 
-    @Override
-    public void init() {
-    }
-
+    /**
+     * doGet method for REST interface
+     * @param req - request from browser
+     * @param resp - response from server to browser
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         LOGGER.info("GET method");
         processRequest(req, resp);
     }
 
+    /**
+     * doPost method for REST interface
+     * @param req - request from browser
+     * @param resp - response from server to browser
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         LOGGER.info("POST method");
         processRequest(req, resp);
     }
 
-    @Override
-    public void destroy() {
-        super.destroy();
-    }
-
+    /**
+     * processing action by using request and response from browser
+     * @param request - request from browser
+     * @param response - response from server
+     */
     private void processRequest(HttpServletRequest request, HttpServletResponse response) {
         try {
-            request.setCharacterEncoding("UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            LOGGER.catching(e);
-        }
-
-        Part filePart;
-        try {
-            filePart = request.getPart("file");
+            Part filePart = request.getPart(FILE_KEY);
             Path path = Paths.get(filePart.getSubmittedFileName());
             InputStream inputStream = filePart.getInputStream();
-            FileWriter writer = new FileWriter(path.toAbsolutePath().toFile());
+            FileWriter writer = new FileWriter(getServletContext().getRealPath(CLONE_XML));
             while (inputStream.available() > 0) {
                 writer.write(inputStream.read());
             }
@@ -75,35 +81,40 @@ public class MainServlet extends HttpServlet {
             String uploadFileName = path.getFileName().toString();
             LOGGER.info("getting file = \"" + uploadFileName + "\"");
 
-            XmlParser parser;
-            String selectedParser = request.getParameter(PARSER_KEY);
-            switch (selectedParser) {
-                case DOM_PARSER: {
-                    parser = new DomXmlParser();
-                    break;
-                }
-                case SAX_PARSER: {
-                    parser = new SaxXmlParser();
-                    break;
-                }
-                case StAX_PARSER: {
-                    parser = new StaxXmlParser();
-                    break;
-                }
-                default: {
-                    parser = new DomXmlParser();
-                }
-            }
-
+            XmlSchemaValidator validator = new XmlSchemaValidator();
+            request.setAttribute(VALIDATE_KEY, validator.validate(getServletContext().getRealPath(XSD_PATH), getServletContext().getRealPath(CLONE_XML)));
+            XmlParser parser = getParser(request.getParameter(PARSER_KEY));
             LinkedList<AbstractPlantEntity> list = parser.parseFile(path.toAbsolutePath().toString());
             StringBuilder builder = new StringBuilder();
             for (AbstractPlantEntity entity : list) {
                 builder.append(entity.toHtml());
             }
-            request.setAttribute("res", builder.toString());
-            request.getRequestDispatcher("/pages/result.jsp").forward(request, response);
+            request.setAttribute(RESULT_KEY, builder.toString());
+            request.getRequestDispatcher(NEXT_PAGE_PATH).forward(request, response);
         } catch (IOException | ServletException | XmlException e) {
             LOGGER.catching(e);
+        }
+    }
+
+    /**
+     * getting parser by name of parser
+     * @param quote - name of parser
+     * @return - object of chosen parser
+     */
+    private XmlParser getParser(String quote) {
+        switch (quote) {
+            case DOM_PARSER: {
+                return new DomXmlParser();
+            }
+            case SAX_PARSER: {
+                return new SaxXmlParser();
+            }
+            case StAX_PARSER: {
+                return new StaxXmlParser();
+            }
+            default: {
+                return new DomXmlParser();
+            }
         }
     }
 }

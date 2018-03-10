@@ -14,11 +14,13 @@ import java.util.LinkedList;
 
 import static by.fyodorov.servletproject.parser.FlowerAttribute.*;
 
+/**
+ * class of SAX handler for parsing by SAX parser
+ */
 class SaxHandler extends DefaultHandler {
     private static final Logger LOGGER = LogManager.getLogger(SaxHandler.class);
 
     private LinkedList<AbstractPlantEntity> plants = new LinkedList<>();
-
 
     private int id = 0;
     private String name = null;
@@ -34,38 +36,64 @@ class SaxHandler extends DefaultHandler {
 
     private byte node = 0;
 
+    /**
+     * handler for starting element in SAX parser
+     * @param uri - uri of scheme
+     * @param localName - local name of node
+     * @param qName - name of current element
+     * @param attributes - attributes for current element
+     */
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) {
-        HashMap<String, String> map = new HashMap<>();
+        HashMap<String, String> attributeMap = new HashMap<>();
         for (int i = 0; i < attributes.getLength(); i++) {
-            map.put(attributes.getQName(i), attributes.getValue(i));
+            attributeMap.put(attributes.getQName(i), attributes.getValue(i));
         }
-        startHandler(qName, map);
+        commonStartHandler(qName, attributeMap);
     }
 
+    /**
+     * handler for ending element in SAX parser
+     * @param uri - uri of scheme
+     * @param localName - local name of node
+     * @param qName - name of element
+     */
     @Override
     public void endElement(String uri, String localName, String qName) {
-        endHandler(qName);
+        commonEndHandler(qName);
     }
 
+    /**
+     * characters handler for filling flower with data
+     * @param ch - characters
+     * @param start - start index
+     * @param length - length of characters
+     */
     @Override
     public void characters(char ch[], int start, int length) {
-        charactersHandler(new String(ch, start, length));
+        commonCharactersHandler(new String(ch, start, length));
     }
 
+    /**
+     * getting result of parsing
+     * @return list of all flowers after parsing
+     */
     public LinkedList<AbstractPlantEntity> getPlants() {
         return plants;
     }
 
-    public void startHandler(String qName, HashMap<String, String> map) {
-        LOGGER.info("start element");
-        LOGGER.info("length ==== " + map.size() + " NAME = " + qName);
+    /**
+     * common handler for SAX and StAX parser
+     * @param qName - name of element
+     * @param attributeMap - map with attributes
+     */
+    public void commonStartHandler (String qName, HashMap<String, String> attributeMap) {
+        LOGGER.info("length ==== " + attributeMap.size() + " NAME = " + qName);
 
-        if (    FLOWER_NODE.getValue().equalsIgnoreCase(qName) ||
-                USUAL_ATTRIBUTE.getValue().equalsIgnoreCase(qName) ||
+        if (    USUAL_ATTRIBUTE.getValue().equalsIgnoreCase(qName) ||
                 WILD_ATTRIBUTE.getValue().equalsIgnoreCase(qName) ||
                 MICRO_ATTRIBUTE.getValue().equalsIgnoreCase(qName)) {
-            id = Integer.valueOf(map.get(ID_ATTRIBUTE.getValue()));
+            id = Integer.valueOf(attributeMap.get(ID_ATTRIBUTE.getValue()));
 
         } else if (NAME_ATTRIBUTE.getValue().equalsIgnoreCase(qName)) {
             node = NAME_ATTRIBUTE.getCode();
@@ -105,8 +133,11 @@ class SaxHandler extends DefaultHandler {
         }
     }
 
-
-    public void charactersHandler(String characters) {
+    /**
+     * common handler for SAX and StAX parsing
+     * @param characters - characters for filling flower
+     */
+    public void commonCharactersHandler (String characters) {
         LOGGER.info("checking - " + characters);
         if (node == NAME_ATTRIBUTE.getCode()) {
             name = characters;
@@ -132,7 +163,11 @@ class SaxHandler extends DefaultHandler {
         node = 0;
     }
 
-    public void endHandler(String qName) {
+    /**
+     * common handler for SAX and StAX parsing
+     * @param qName - name of element
+     */
+    public void commonEndHandler(String qName) {
         if (WILD_ATTRIBUTE.getValue().equalsIgnoreCase(qName)) {
             WildPlantEntity entity = new WildPlantEntity();
             entity.setStalkColor(stalkColor);
@@ -165,6 +200,10 @@ class SaxHandler extends DefaultHandler {
         }
     }
 
+    /**
+     * filling flower with data
+     * @param entity - entity for filling
+     */
     private void fillFlower(AbstractPlantEntity entity) {
         entity.setId(id);
         entity.setName(name);
@@ -173,6 +212,9 @@ class SaxHandler extends DefaultHandler {
         entity.setMultiplying(multiplying);
     }
 
+    /**
+     * reset params for next parsing
+     */
     private void reset() {
         id = 0;
         name = null;

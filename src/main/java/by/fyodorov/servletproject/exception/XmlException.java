@@ -1,5 +1,8 @@
 package by.fyodorov.servletproject.exception;
 
+/**
+ * class of Exception for this application
+ */
 public class XmlException extends Exception {
     public XmlException(String message) {
         super(message);

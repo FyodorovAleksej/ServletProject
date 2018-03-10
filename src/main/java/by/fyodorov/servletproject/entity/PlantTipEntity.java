@@ -3,6 +3,9 @@ package by.fyodorov.servletproject.entity;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
+/**
+ * class of growingTips
+ */
 @XmlType(propOrder = {"temperature", "lighting", "watering"}, name = "growingTips")
 public class PlantTipEntity {
     @XmlElement
@@ -13,32 +16,53 @@ public class PlantTipEntity {
     private double watering;
 
     public PlantTipEntity() {
-        this(0, false, 0);
     }
 
-    public PlantTipEntity(double temperature, boolean lighting, double watering) {
-        this.temperature = temperature;
-        this.lighting = lighting;
-        this.watering = watering;
-    }
-
+    /**
+     * getting temperature
+     * @return temperature
+     */
     public double getTemperature() {
         return temperature;
     }
+
+    /**
+     * getting lighting
+     * @return lighting
+     */
     public boolean isLighting() {
         return lighting;
     }
+
+    /**
+     * getting watering
+     * @return watering
+     */
     public double getWatering() {
         return watering;
     }
 
 
+    /**
+     * setting temperature
+     * @param temperature - temperature for current flower
+     */
     public void setTemperature(double temperature) {
         this.temperature = temperature;
     }
+
+    /**
+     * setting lighting
+     * @param lighting - lighting for current flower
+     */
     public void setLighting(boolean lighting) {
         this.lighting = lighting;
     }
+
+    /**
+     * setting watering
+     * @param watering - count of water for current flower
+     */
     public void setWatering(double watering) {
         this.watering = watering;
     }

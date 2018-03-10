@@ -1,123 +1,124 @@
-<?xml version="1.0"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://www.fyodorov.by/flowers"
+        xmlns:flw="http://www.fyodorov.by/flowers"
+        elementFormDefault="qualified">
 
-    <xs:element name="name" default="unnamed">
-        <xs:simpleType>
-            <xs:restriction base="xs:string">
-                <xs:pattern value="[a-z]"/>
-            </xs:restriction>
-        </xs:simpleType>
-    </xs:element>
-
-    <xs:element name="origin">
-        <xs:simpleType>
-            <xs:restriction base="xs:string">
-                <xs:pattern value="[a-zA-Z]"/>
-            </xs:restriction>
-        </xs:simpleType>
-    </xs:element>
-
-    <xs:element name="soil" default="podzolic">
-        <xs:simpleType>
-            <xs:restriction base="xs:string">
-                <xs:enumeration value="podzolic"/>
-                <xs:enumeration value="ground"/>
-                <xs:enumeration value="sad-podzolic"/>
-            </xs:restriction>
-        </xs:simpleType>
-    </xs:element>
-
-    <xs:element name="multiplying" default="podzolic">
-        <xs:simpleType>
-            <xs:restriction base="xs:string">
-                <xs:enumeration value="leafs"/>
-                <xs:enumeration value="stalks"/>
-                <xs:enumeration value="seeds"/>
-            </xs:restriction>
-        </xs:simpleType>
-    </xs:element>
-
-    <xs:element name="stalkColor" type="xs:string"/>
-    <xs:element name="leafColor" type="xs:string"/>
-    <xs:element name="size" type="xs:double"/>
-    <xs:element name="temperature" type="xs:double"/>
-    <xs:element name="lighting" type="xs:boolean"/>
-    <xs:element name="watering" type="xs:double"/>
+    <element name="flowers">
+        <complexType>
+            <sequence>
+                <element ref="flw:flower"
+                         minOccurs="1"
+                         maxOccurs="unbounded"/>
+            </sequence>
+        </complexType>
+    </element>
 
 
-    <xs:element name="visualParameters">
-        <xs:complexType>
-            <xs:all>
-                <xs:element ref="stalkColor"/>
-                <xs:element ref="leafColor"/>
-                <xs:element ref="size"/>
-            </xs:all>
-        </xs:complexType>
-    </xs:element>
+    <element name="flower" type="flw:common-flower" abstract="true"></element>
+    <element name="wild" type="flw:wildType-flower" substitutionGroup="flw:flower"></element>
+    <element name="micro" type="flw:microType-flower" substitutionGroup="flw:flower"></element>
+    <element name="usual" type="flw:usualType-flower" substitutionGroup="flw:flower"></element>
 
-    <xs:element name="growingTips">
-        <xs:complexType>
-            <xs:all>
-                <xs:element ref="temperature"/>
-                <xs:element ref="lighting"/>
-                <xs:element ref="watering"/>
-            </xs:all>
-        </xs:complexType>
-    </xs:element>
+    <simpleType name="identification">
+        <restriction base="int">
+            <pattern value="[0-9]+"/>
+        </restriction>
+    </simpleType>
 
-    <xs:complexType name = "flowerBase">
-        <xs:all>
-            <xs:element ref="name"/>
-            <xs:element ref="soil"/>
-            <xs:element ref="origin"/>
-            <xs:element ref="multiplying"/>
-        </xs:all>
-        <xs:attribute type="xs:ID" name="id"/>
-    </xs:complexType>
+    <simpleType name="nameType">
+        <restriction base="string">
+            <pattern value="[a-zA-Z]+"/>
+        </restriction>
+    </simpleType>
 
-    <xs:complexType name="wildType">
-        <xs:complexContent>
-            <xs:extension base="flowerBase">
-                <xs:all>
-                    <xs:element ref="visualParameters"/>
-                </xs:all>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
+    <complexType name="common-flower">
+        <sequence>
+            <element name="name" type="flw:nameType"/>
+            <element name="soil">
+                <simpleType>
+                    <restriction base="string">
+                        <enumeration value="ground"/>
+                        <enumeration value="podzolic"/>
+                        <enumeration value="ground-podzolic"/>
+                    </restriction>
+                </simpleType>
+            </element>
+            <element name="origin" type="string"/>
+            <element name="multiplying">
+                <simpleType>
+                    <restriction base="string">
+                        <enumeration value="seeds"/>
+                        <enumeration value="plant"/>
+                        <enumeration value="spore"/>
+                    </restriction>
+                </simpleType>
+            </element>
+        </sequence>
+        <attribute name="id" type="flw:identification" use="required"/>
+    </complexType>
 
-    <xs:complexType name="microType">
-        <xs:complexContent>
-            <xs:extension base="flowerBase">
-                <xs:all>
-                    <xs:element ref="growingTips"/>
-                </xs:all>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-
-    <xs:complexType name="usualType">
-        <xs:complexContent>
-            <xs:extension base="flowerBase">
-                <xs:all>
-                    <xs:element ref="visualParameters"/>
-                    <xs:element ref="growingTips"/>
-                </xs:all>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-    
-    <xs:element name="flower" type="flowerBase" abstract="true"/>
-
-    <xs:element name="wild" type="wildType" substitutionGroup="flower"/>
-    <xs:element name="micro" type="microType" substitutionGroup="flower"/>
-    <xs:element name="usual" type="usualType" substitutionGroup="flower"/>
+    <complexType name="wildType-flower">
+        <complexContent>
+            <extension base="flw:common-flower">
+                <sequence>
+                    <element name="visualParameters">
+                        <complexType>
+                            <sequence>
+                                <element name="stalkColor" type="string"/>
+                                <element name="leafColor" type="string"/>
+                                <element name="size" type="double"/>
+                            </sequence>
+                        </complexType>
+                    </element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
 
 
-    <xs:element name="flowers">
-        <xs:complexType>
-            <xs:sequence>
-                <xs:element ref="flower" maxOccurs="unbounded" minOccurs="0"/>
-            </xs:sequence>
-        </xs:complexType>
-    </xs:element>
-</xs:schema>
+    <complexType name="microType-flower">
+        <complexContent>
+            <extension base="flw:common-flower">
+                <sequence>
+                    <element name="growingTips">
+                        <complexType>
+                            <sequence>
+                                <element name="temperature" type="double"/>
+                                <element name="lighting" type="boolean"/>
+                                <element name="watering" type="double"/>
+                            </sequence>
+                        </complexType>
+                    </element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <complexType name="usualType-flower">
+        <complexContent>
+            <extension base="flw:common-flower">
+                <sequence>
+                    <element name="visualParameters">
+                        <complexType>
+                            <sequence>
+                                <element name="stalkColor" type="string"/>
+                                <element name="leafColor" type="string"/>
+                                <element name="size" type="double"/>
+                            </sequence>
+                        </complexType>
+                    </element>
+                    <element name="growingTips">
+                        <complexType>
+                            <sequence>
+                                <element name="temperature" type="double"/>
+                                <element name="lighting" type="boolean"/>
+                                <element name="watering" type="double"/>
+                            </sequence>
+                        </complexType>
+                    </element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+</schema>

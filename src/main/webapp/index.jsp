@@ -24,8 +24,8 @@
 </head>
 <body>
 <br/>
-<fmt:message key="welcome" var="wel"/>
-<h2 class="text-center">${wel}</h2>
+<fmt:message key="welcome" var="welcomeLabel"/>
+<h2 class="text-center">${welcomeLabel}</h2>
 <br/>
 <img src="${request.contextPath}/images/justDoIt.jpg"/>
 <form>
@@ -34,7 +34,7 @@
     <option value="ru" ${language == 'ru' ? 'selected' : ''}>Russian</option>
 </select>
 </form>
-<fmt:message key="send" var="se"/>
+<fmt:message key="send" var="sendText"/>
 <form action="main" method="post" enctype="multipart/form-data">
     <select id="parser" class="form-control" name="parser">
         <option value="DOM">DOM</option>
@@ -42,7 +42,7 @@
         <option value="StAX">StAX</option>
     </select>
     <input type="file" name="file" class="btn" value="OOO"/>
-    <button type="submit" class="btn btn-primary">${se}</button>
+    <button type="submit" class="btn btn-primary">${sendText}</button>
 </form>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->

@@ -10,19 +10,12 @@ import org.testng.annotations.Test;
 import java.util.LinkedList;
 
 public class DomXmlParserTest {
-
-    @BeforeMethod
-    public void setUp() throws Exception {
-    }
-
-    @AfterMethod
-    public void tearDown() throws Exception {
-    }
+    private static final String XML_PATH = "input/input.xml";
 
     @Test
     public void testParseFile() throws Exception {
         XmlParser parser = new DomXmlParser();
-        LinkedList<AbstractPlantEntity> list = parser.parseFile("input/input.xml");
+        LinkedList<AbstractPlantEntity> list = parser.parseFile(XML_PATH);
         AbstractPlantEntity actual = list.getFirst();
         WildPlantEntity expected = new WildPlantEntity();
         expected.setId(0);
